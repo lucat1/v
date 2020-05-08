@@ -1,6 +1,7 @@
 import { Chunk } from "./stats";
 
 export const size = (chunks: Chunk[], req: number[]): number => {
+  console.log(req);
   return req.reduce((prev, curr) => {
     return prev + chunks[curr].size;
   }, 0);

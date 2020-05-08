@@ -9,21 +9,18 @@ interface VisualizerProps {
 }
 
 const Visualizer: FunctionComponent<VisualizerProps> = ({ data }) => {
-  const assets = useMemo(() => {
+  const assets = useMemo<Asset[]>(() => {
     return data.assets
       .filter(({ name }) => name.endsWith(".js"))
-      .sort(
-        ({ chunks: a }, { chunks: b }) =>
-          size(data.chunks, b) - size(data.chunks, a)
-      );
-  }, [data]);
+      .sort(({ size: a }, { size: b }) => b - a);
+  }, [data.assets]);
 
   return (
     <div>
       <ul>
         {assets.map((asset) => (
           <li>
-            {asset.name} -> {format(size(data.chunks, asset.chunks))}
+            {asset.name} -> {format(asset.size)}
           </li>
         ))}
       </ul>
