@@ -4,13 +4,17 @@
   "description": "A webpack stats visualizer",
   "scripts": {
     "prepare": "snowpack install",
-    "dev": "snowpack dev"
+    "dev": "snowpack dev",
+    "prettify": "prettier --write src/**/**/*.{ts,tsx,json}"
   },
   "author": "LucaT <fromzeroluke1@gmail.com",
   "license": "MIT",
   "devDependencies": {
     "@snowpack/app-scripts-react": "^0.3.3",
     "@types/react": "^16.9.34",
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
     "snowpack": "^2.0.0-beta.12",
     "typescript": "^3.8.3"
   },
@@ -18,5 +22,20 @@
     "goober": "lucat1/goober#3f120e5c0d97423fb4b0bf68893d764a11ce05ae",
     "preact": "^10.4.1",
     "promisify-file-reader": "^4.0.0"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "none",
+    "proseWrap": "always",
+    "quoteProps": "consistent"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --pattern 'src/**/**/*.{ts,tsx,json}' --staged"
+    }
   }
 }

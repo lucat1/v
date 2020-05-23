@@ -1,30 +1,30 @@
-import { Chunk } from "./stats";
+import { Chunk } from './stats'
 
 export const size = (chunks: Chunk[], req: number[]): number => {
-  console.log(req);
+  console.log(req)
   return req.reduce((prev, curr) => {
-    return prev + chunks[curr].size;
-  }, 0);
-};
+    return prev + chunks[curr].size
+  }, 0)
+}
 
 export const format = (size: number, precision = 1): string => {
   let kb = {
-    label: "k",
-    value: 1024,
-  };
+    label: 'k',
+    value: 1024
+  }
   let mb = {
-    label: "M",
-    value: 1024 * 1024,
-  };
-  let denominator;
+    label: 'M',
+    value: 1024 * 1024
+  }
+  let denominator
 
   if (size >= mb.value) {
-    denominator = mb;
+    denominator = mb
   } else {
-    denominator = kb;
+    denominator = kb
     if (size < kb.value * 0.92 && precision === 0) {
-      precision = 1;
+      precision = 1
     }
   }
-  return (size / denominator.value).toFixed(precision) + denominator.label;
-};
+  return (size / denominator.value).toFixed(precision) + denominator.label
+}
