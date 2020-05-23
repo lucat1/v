@@ -13,7 +13,7 @@ export interface Stats {
   entrypoints: { [key: string]: Entrypoint }
   namedChunkGroups: { [key: string]: Entrypoint }
   chunks: Chunk[]
-  modules: ChunkModule[]
+  modules: Module[]
   filteredModules: number
   logging: Logging
   children: any[]
@@ -48,12 +48,12 @@ export interface Chunk {
   parents: any[]
   children: any[]
   childrenByOrder: Info
-  modules: ChunkModule[]
+  modules: Module[]
   filteredModules: number
   origins: Origin[]
 }
 
-export interface ChunkModule {
+export interface Module {
   id: number
   identifier: string
   name: string
@@ -78,7 +78,7 @@ export interface ChunkModule {
   providedExports: string[] | null
   optimizationBailout: string[]
   depth: number
-  modules?: ModuleModule[]
+  modules?: Module[]
   filteredModules?: number
   profile?: Profile
   source?: string
@@ -95,35 +95,6 @@ export interface Profile {
   factory: number
   building: number
   dependencies?: number
-}
-
-export interface ModuleModule {
-  id: null
-  identifier: string
-  name: string
-  index: number
-  index2: number
-  size: number
-  cacheable: boolean
-  built: boolean
-  optional: boolean
-  prefetched: boolean
-  chunks: any[]
-  issuer: string
-  issuerId: number | null
-  issuerName: string
-  issuerPath: IssuerPath[]
-  profile: Profile
-  failed: boolean
-  errors: number
-  warnings: number
-  assets: any[]
-  reasons: Reason[]
-  usedExports: string[] | boolean
-  providedExports: string[]
-  optimizationBailout: string[]
-  depth: number
-  source: string
 }
 
 export interface Reason {
