@@ -9,7 +9,7 @@ import { H2 } from './typography'
 
 const Container = styled('div')`
   width: 100%;
-  height: 20em;
+  height: 20rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -20,7 +20,7 @@ const Container = styled('div')`
   align-items: center;
 
   border: 2px solid grey;
-  border-radius: 2em;
+  border-radius: 2rem;
   cursor: pointer;
 `
 

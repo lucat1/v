@@ -10,6 +10,6 @@ export const Button = styled('button')`
   padding: 0;
   background-color: #f2f1f1;
   border-top: 2px dashed gray;
-  border-bottom-left-radius: 2em;
-  border-bottom-right-radius: 2em;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
 `

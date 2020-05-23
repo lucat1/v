@@ -13,7 +13,7 @@ glob`
   }
 
   body {
-    font-size: calc(1em + .1vw);
+    font-size: calc(1rem + .1vw);
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
     margin: 0;
     height: 100vh;
