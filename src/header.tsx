@@ -3,9 +3,9 @@ import { styled } from 'goober'
 
 const H = styled('header')`
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
-  width: 80%;
+  width: 75%;
   height: 4rem;
   margin: 0 auto;
 

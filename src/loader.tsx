@@ -4,6 +4,7 @@ import { styled } from 'goober'
 import { text } from 'promisify-file-reader'
 
 import { Stats } from './stats'
+import { Button } from './button'
 import { H2 } from './typography'
 
 const Container = styled('div')`
@@ -12,11 +13,11 @@ const Container = styled('div')`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, calc(-50% - 4rem));
 
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
 
   border: 2px solid grey;
   border-radius: 2em;
@@ -95,6 +96,8 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
         <H2>
           {dragging ? 'Just drop it!' : error || 'Upload your JSON file here'}
         </H2>
+
+        <Button>Check your latest JSON file</Button>
       </Container>
       <input
         style={{ display: 'none' }}
