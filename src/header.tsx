@@ -3,22 +3,27 @@ import { styled } from 'goober'
 
 const H = styled('header')`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 80%;
-  max-width: 1125px;
-  margin: 3rem auto 11rem;
+  height: 4rem;
+  margin: 0 auto;
+
+  span {
+    font-size: 2rem;
+    margin-left: 1rem;
+  }
 `
 
 const Image = styled('img')`
-  height: 2rem;
+  height: 3rem;
 `
 
 const Header: FunctionComponent = () => {
   return (
     <H>
       <Image src='/webpack.svg' />
-      <span>menu</span>
+      <span>stats</span>
     </H>
   )
 }

@@ -9,6 +9,10 @@ import { H2 } from './typography'
 const Container = styled('div')`
   width: 100%;
   height: 20em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   display: flex;
   align-items: center;
@@ -88,7 +92,9 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
           color: error && !dragging ? 'red' : 'black'
         }}
       >
-        <H2>{dragging ? 'Just drop it!' : error || 'Load a stats file'}</H2>
+        <H2>
+          {dragging ? 'Just drop it!' : error || 'Upload your JSON file here'}
+        </H2>
       </Container>
       <input
         style={{ display: 'none' }}
