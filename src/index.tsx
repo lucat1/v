@@ -1,5 +1,5 @@
-import 'preact/debug'
-import { render, h } from 'preact'
+import { h, render } from 'preact'
+import 'preact/devtools'
 
 import App from './app'
 

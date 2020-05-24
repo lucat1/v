@@ -10,12 +10,12 @@
   "author": "LucaT <fromzeroluke1@gmail.com",
   "license": "MIT",
   "devDependencies": {
-    "@snowpack/app-scripts-react": "^0.3.3",
+    "@snowpack/app-scripts-preact": "^0.8.0",
     "@types/react": "^16.9.34",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "snowpack": "^2.0.0-beta.12",
+    "snowpack": "^2.0.0-rc.9",
     "typescript": "^3.8.3"
   },
   "dependencies": {

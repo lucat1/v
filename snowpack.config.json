@@ -1,10 +1,5 @@
 {
-  "extends": "@snowpack/app-scripts-react",
-  "installOptions": {
-    "installTypes": true
-  },
-  "alias": {
-    "preact/debug": "preact/debug",
-    "preact/hooks": "preact/hooks"
-  }
+  "extends": "@snowpack/app-scripts-preact",
+  "devOptions": {},
+  "installOptions": {}
 }

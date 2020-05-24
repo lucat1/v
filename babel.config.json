@@ -1,6 +1,3 @@
 {
-  "presets": [
-    ["@babel/preset-typescript", { "jsxPragma": "h" }],
-    ["@babel/preset-react", { "pragma": "h" }]
-  ]
+  "extends": "@snowpack/app-scripts-preact/babel.config.json"
 }
