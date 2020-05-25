@@ -1,5 +1,6 @@
 import { h, Fragment, FunctionComponent } from 'preact'
 import { useCallback, useState, useMemo } from 'preact/hooks'
+import TransitionGroup from 'preact-transition-group'
 
 import Header from './header'
 import Body from './body'
@@ -35,24 +36,30 @@ const App: FunctionComponent = () => {
   // currently selected asset view
   const [selected, setSelected] = useState(-1)
 
+  const content = data ? (
+    selected === -1 ? (
+      <TransitionGroup transitionName='test'>
+        <Visualizer
+          select={setSelected}
+          assets={assets}
+          totalSize={totalSize}
+        />
+      </TransitionGroup>
+    ) : (
+      <TransitionGroup transitionName='test'>
+        <Modules asset={assets[selected]} data={data} />
+      </TransitionGroup>
+    )
+  ) : (
+    <TransitionGroup transitionName='test'>
+      <Loader onLoad={handleLoad} />
+    </TransitionGroup>
+  )
+
   return (
     <Fragment>
       <Header />
-      <Body>
-        {data ? (
-          selected === -1 ? (
-            <Visualizer
-              select={setSelected}
-              assets={assets}
-              totalSize={totalSize}
-            />
-          ) : (
-            <Modules asset={assets[selected]} data={data} />
-          )
-        ) : (
-          <Loader onLoad={handleLoad} />
-        )}
-      </Body>
+      <Body>{content}</Body>
     </Fragment>
   )
 }
