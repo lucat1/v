@@ -1,37 +1,27 @@
 import { h, FunctionComponent } from 'preact'
-import { useMemo, useState } from 'preact/hooks'
 
-import { Stats, Asset } from './stats'
+import { Asset } from './stats'
 import { format } from './calc'
-import Modules from './modules'
 import { Percentage, Li, Ul } from './list'
 
 interface VisualizerProps {
-  data: Stats
+  assets: Asset[]
+  totalSize: number
+  select: (i: number) => void
 }
 
-const Visualizer: FunctionComponent<VisualizerProps> = ({ data }) => {
-  // KEEP
-  console.info('displaying data', data)
-
-  const assets = useMemo<Asset[]>(
-    () =>
-      data.assets
-        .filter(({ name }) => name.endsWith('.js'))
-        .sort(({ size: a }, { size: b }) => b - a),
-    [data.assets]
-  )
-  const totalSize = assets.reduce((prev, curr) => prev + curr.size, 0)
-
-  const [selected, setSelected] = useState(-1)
-
+const Visualizer: FunctionComponent<VisualizerProps> = ({
+  assets,
+  totalSize,
+  select
+}) => {
   return (
     <Ul>
       {assets.map((asset, i) => {
         const percentage = ((asset.size / totalSize) * 100).toFixed(1)
 
         return (
-          <Li key={i}>
+          <Li key={i} onClick={() => select(i)}>
             <p>
               {asset.name} ~ {format(asset.size)}
             </p>
