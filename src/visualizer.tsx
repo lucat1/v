@@ -21,18 +21,27 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({ data }) => {
         .sort(({ size: a }, { size: b }) => b - a),
     [data.assets]
   )
+  const totalSize = assets.reduce((prev, curr) => prev + curr.size, 0)
 
   const [selected, setSelected] = useState(-1)
 
   return (
     <Ul>
-      <Li>
-        <p>vendor.js ~ 24kb</p>
-        <Percentage>
-          <div></div>
-          <span>85%</span>
-        </Percentage>
-      </Li>
+      {assets.map((asset, i) => {
+        const percentage = ((asset.size / totalSize) * 100).toFixed(1)
+
+        return (
+          <Li key={i}>
+            <p>
+              {asset.name} ~ {format(asset.size)}
+            </p>
+            <Percentage>
+              <div style={{ width: `${percentage}%` }} />
+              <span>{percentage}%</span>
+            </Percentage>
+          </Li>
+        )
+      })}
     </Ul>
   )
 }

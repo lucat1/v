@@ -31,7 +31,6 @@ export const Percentage = styled('div')`
 
   div {
     height: 0.625rem;
-    width: 85%;
     background: #6a7de1;
   }
 
