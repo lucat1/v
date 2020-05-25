@@ -4,6 +4,7 @@ import { useMemo, useState } from 'preact/hooks'
 import { Stats, Asset } from './stats'
 import { format } from './calc'
 import Modules from './modules'
+import { Percentage, Li, Ul } from './list'
 
 interface VisualizerProps {
   data: Stats
@@ -24,20 +25,15 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({ data }) => {
   const [selected, setSelected] = useState(-1)
 
   return (
-    <div>
-      <ul>
-        {assets.map((asset, i) => {
-          console.log(asset.chunks.length)
-          return (
-            <li onClick={() => setSelected(i)}>
-              {asset.name} -> {format(asset.size)}
-            </li>
-          )
-        })}
-      </ul>
-
-      {selected !== -1 && <Modules data={data} asset={assets[selected]} />}
-    </div>
+    <Ul>
+      <Li>
+        <p>vendor.js ~ 24kb</p>
+        <Percentage>
+          <div></div>
+          <span>85%</span>
+        </Percentage>
+      </Li>
+    </Ul>
   )
 }
 
