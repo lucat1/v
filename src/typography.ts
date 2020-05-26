@@ -1,6 +1,6 @@
 import { styled } from 'goober'
 
-export const H2 = styled('h2')`
+export const UploadText = styled('h2')`
   font-size: calc(1rem + 1vw);
   pointer-events: none;
   display: flex;
@@ -8,4 +8,10 @@ export const H2 = styled('h2')`
   flex: 1;
   text-transform: uppercase;
   text-align: center;
+`
+
+export const Title = styled('h1')`
+  font-size: calc(1rem + 1vw);
+  font-weight: 500;
+  padding: 0 1rem;
 `

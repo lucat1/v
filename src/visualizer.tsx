@@ -4,6 +4,7 @@ import Body from './body'
 import { Asset } from './stats'
 import { format } from './calc'
 import { Percentage, Li, Ul } from './list'
+import { Title } from './typography'
 
 interface VisualizerProps {
   assets: Asset[]
@@ -17,6 +18,9 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({
   select
 }) => (
   <Body>
+    <Title>
+      Click on a graph to display its file contents and relative sizes
+    </Title>
     <Ul>
       {assets.map((asset, i) => {
         const percentage = ((asset.size / totalSize) * 100).toFixed(1)

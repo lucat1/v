@@ -8,10 +8,16 @@ const H = styled('header')`
   width: 75%;
   height: 4rem;
   margin: 0 auto;
+  user-select: none;
+  transition: width 150ms;
 
   span {
     font-size: 2rem;
     margin-left: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    width: 95%;
   }
 `
 

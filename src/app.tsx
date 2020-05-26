@@ -1,5 +1,5 @@
 import { h, Fragment, FunctionComponent } from 'preact'
-import { useCallback, useState, useMemo, useEffect } from 'preact/hooks'
+import { useCallback, useState, useMemo } from 'preact/hooks'
 import { styled, css } from 'goober'
 import { TransitionGroup, CSSTransition } from '@bmp/preact-transition-group'
 
@@ -15,6 +15,7 @@ const absolute = css`
   right: 0;
   bottom: 0;
   top: 4rem;
+  overflow: hidden;
 
   .view-enter {
     transform: translateX(100%);
@@ -37,10 +38,11 @@ const absolute = css`
 
 const Container = styled('div')`
   position: absolute;
-  top: 4rem;
+  top: 0;
   left: 0;
   height: 100%;
   width: 100vw;
+  overflow-y: auto;
 `
 
 const App: FunctionComponent = () => {

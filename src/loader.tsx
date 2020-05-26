@@ -5,7 +5,7 @@ import { text } from 'promisify-file-reader'
 
 import Body from './body'
 import { Button } from './button'
-import { H2 } from './typography'
+import { UploadText } from './typography'
 
 import { Stats } from './stats'
 
@@ -95,9 +95,9 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
           color: error && !dragging ? 'red' : 'black'
         }}
       >
-        <H2>
+        <UploadText>
           {dragging ? 'Just drop it!' : error || 'Upload your JSON file here'}
-        </H2>
+        </UploadText>
 
         <Button>Check your latest JSON file</Button>
       </Container>
