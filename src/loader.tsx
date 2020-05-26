@@ -1,11 +1,13 @@
-import { h, FunctionComponent, Fragment } from 'preact'
+import { h, FunctionComponent } from 'preact'
 import { useCallback, useRef, useState } from 'preact/hooks'
 import { styled } from 'goober'
 import { text } from 'promisify-file-reader'
 
-import { Stats } from './stats'
+import Body from './body'
 import { Button } from './button'
 import { H2 } from './typography'
+
+import { Stats } from './stats'
 
 const Container = styled('div')`
   width: 100%;
@@ -80,7 +82,7 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
   }
 
   return (
-    <Fragment>
+    <Body>
       <Container
         onDrop={handleDrop}
         onDragEnter={handleHover(true)}
@@ -106,7 +108,7 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
         id='stats-file'
         type='file'
       />
-    </Fragment>
+    </Body>
   )
 }
 

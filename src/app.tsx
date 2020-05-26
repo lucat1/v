@@ -1,13 +1,47 @@
 import { h, Fragment, FunctionComponent } from 'preact'
-import { useCallback, useState, useMemo } from 'preact/hooks'
-import TransitionGroup from 'preact-transition-group'
+import { useCallback, useState, useMemo, useEffect } from 'preact/hooks'
+import { styled, css } from 'goober'
+import { TransitionGroup, CSSTransition } from '@bmp/preact-transition-group'
 
 import Header from './header'
-import Body from './body'
 import Loader from './loader'
 import Visualizer from './visualizer'
 import { Asset } from './stats'
 import Modules from './modules'
+
+const absolute = css`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 4rem;
+
+  .view-enter {
+    transform: translateX(100%);
+  }
+
+  .view-enter-active {
+    transform: translateX(0%);
+    transition: transform 300ms ease-in-out;
+  }
+
+  .view-exit {
+    transform: translateX(0%);
+  }
+
+  .view-exit-active {
+    transform: translateX(-100%);
+    transition: transform 300ms ease-in-out;
+  }
+`
+
+const Container = styled('div')`
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  height: 100%;
+  width: 100vw;
+`
 
 const App: FunctionComponent = () => {
   const [data, setData] = useState(null)
@@ -36,30 +70,32 @@ const App: FunctionComponent = () => {
   // currently selected asset view
   const [selected, setSelected] = useState(-1)
 
-  const content = data ? (
-    selected === -1 ? (
-      <TransitionGroup transitionName='test'>
-        <Visualizer
-          select={setSelected}
-          assets={assets}
-          totalSize={totalSize}
-        />
-      </TransitionGroup>
-    ) : (
-      <TransitionGroup transitionName='test'>
-        <Modules asset={assets[selected]} data={data} />
-      </TransitionGroup>
-    )
-  ) : (
-    <TransitionGroup transitionName='test'>
-      <Loader onLoad={handleLoad} />
-    </TransitionGroup>
-  )
-
   return (
     <Fragment>
       <Header />
-      <Body>{content}</Body>
+      <TransitionGroup className={absolute}>
+        <CSSTransition
+          key={data ? selected : -2}
+          timeout={300}
+          classNames='view'
+        >
+          <Container>
+            {data ? (
+              selected === -1 ? (
+                <Visualizer
+                  select={setSelected}
+                  assets={assets}
+                  totalSize={totalSize}
+                />
+              ) : (
+                <Modules asset={assets[selected]} data={data} />
+              )
+            ) : (
+              <Loader onLoad={handleLoad} />
+            )}
+          </Container>
+        </CSSTransition>
+      </TransitionGroup>
     </Fragment>
   )
 }

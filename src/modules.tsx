@@ -1,6 +1,7 @@
 import { h, FunctionComponent } from 'preact'
 import { useMemo } from 'preact/hooks'
 
+import Body from './body'
 import { Stats, Asset, Module } from './stats'
 import { format } from './calc'
 
@@ -30,7 +31,7 @@ const Modules: FunctionComponent<ModulesProps> = ({ data, asset }) => {
   )
 
   return (
-    <div>
+    <Body>
       <h1>{asset.name}</h1>
       <hr />
       <h2>
@@ -43,7 +44,7 @@ const Modules: FunctionComponent<ModulesProps> = ({ data, asset }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </Body>
   )
 }
 

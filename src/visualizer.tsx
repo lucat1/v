@@ -1,5 +1,6 @@
 import { h, FunctionComponent } from 'preact'
 
+import Body from './body'
 import { Asset } from './stats'
 import { format } from './calc'
 import { Percentage, Li, Ul } from './list'
@@ -14,8 +15,8 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({
   assets,
   totalSize,
   select
-}) => {
-  return (
+}) => (
+  <Body>
     <Ul>
       {assets.map((asset, i) => {
         const percentage = ((asset.size / totalSize) * 100).toFixed(1)
@@ -33,7 +34,7 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({
         )
       })}
     </Ul>
-  )
-}
+  </Body>
+)
 
 export default Visualizer

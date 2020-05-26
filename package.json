@@ -19,9 +19,9 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@bmp/preact-transition-group": "0.0.1",
     "goober": "lucat1/goober#3f120e5c0d97423fb4b0bf68893d764a11ce05ae",
     "preact": "^10.4.1",
-    "preact-transition-group": "^1.1.1",
     "promisify-file-reader": "^4.0.0"
   },
   "prettier": {
