@@ -4,6 +4,8 @@ import { useMemo } from 'preact/hooks'
 import Body from './body'
 import { Stats, Asset, Module } from './stats'
 import { format } from './calc'
+import { Title } from './typography'
+import { Ul, Li, Percentage } from './list'
 
 interface ModulesProps {
   data: Stats
@@ -32,18 +34,26 @@ const Modules: FunctionComponent<ModulesProps> = ({ data, asset }) => {
 
   return (
     <Body>
-      <h1>{asset.name}</h1>
-      <hr />
-      <h2>
-        dependecies/dependents {sibilings.map(asset => asset.name).join(', ')}
-      </h2>
-      <ul>
-        {modules.map(module => (
-          <li>
-            {module.name} -> {format(module.size)}
-          </li>
-        ))}
-      </ul>
+      <Title style={{ position: 'sticky', top: 0 }}>
+        {asset.name} ~ {format(asset.size)}
+      </Title>
+      <Ul>
+        {modules.map((module, i) => {
+          const percentage = ((module.size / asset.size) * 100).toFixed(1)
+
+          return (
+            <Li key={i} title={module.name}>
+              <p>
+                {format(module.size)} => {module.name}
+              </p>
+              <Percentage>
+                <div style={{ width: `${percentage}%` }} />
+                <span>{percentage}%</span>
+              </Percentage>
+            </Li>
+          )
+        })}
+      </Ul>
     </Body>
   )
 }

@@ -15,7 +15,11 @@ export const Li = styled('li')`
 
   p {
     font-size: calc(1rem + 0.2vw);
-    margin: 0;
+    margin: 0 0 0.5rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 80%;
   }
 
   &:hover {

@@ -13,5 +13,6 @@ export const UploadText = styled('h2')`
 export const Title = styled('h1')`
   font-size: calc(1rem + 1vw);
   font-weight: 500;
-  padding: 0 1rem;
+  padding: 1rem;
+  background-color: white;
 `
