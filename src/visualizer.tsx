@@ -1,19 +1,21 @@
 import { h, FunctionComponent } from 'preact'
 
 import Body from './body'
-import { Asset } from './stats'
-import { format } from './calc'
+import { Asset, Chunk } from './stats'
+import { format, sumModules, getModules } from './calc'
 import { Percentage, Li, Ul } from './list'
 import { Title } from './typography'
 
 interface VisualizerProps {
   assets: Asset[]
+  chunks: Chunk[]
   totalSize: number
   select: (i: number) => void
 }
 
 const Visualizer: FunctionComponent<VisualizerProps> = ({
   assets,
+  chunks,
   totalSize,
   select
 }) => (
@@ -23,12 +25,13 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({
     </Title>
     <Ul>
       {assets.map((asset, i) => {
-        const percentage = ((asset.size / totalSize) * 100).toFixed(1)
+        const size = sumModules(getModules(chunks, asset.chunks))
+        const percentage = ((size / totalSize) * 100).toFixed(1)
 
         return (
           <Li key={i} onClick={() => select(i)}>
             <p>
-              {asset.name} ~ {format(asset.size)}
+              {asset.name} ~ {format(size)}
             </p>
             <Percentage>
               <div style={{ width: `${percentage}%` }} />

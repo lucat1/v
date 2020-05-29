@@ -1,4 +1,4 @@
-import { Chunk } from './stats'
+import { Stats, Chunk, Module } from './stats'
 
 export const size = (chunks: Chunk[], req: number[]): number => {
   return req.reduce((prev, curr) => {
@@ -30,3 +30,9 @@ export const format = (size: number, precision = 1): string => {
   }
   return (size / denominator.value).toFixed(precision) + denominator.label
 }
+
+export const getModules = (chunks: Chunk[], used: number[]): Module[] =>
+  used.reduce((prev, id) => prev.concat(chunks[id].modules), [])
+
+export const sumModules = (modules: Module[]) =>
+  modules.reduce((prev, curr) => prev + curr.size, 0)

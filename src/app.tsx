@@ -8,6 +8,7 @@ import Loader from './loader'
 import Visualizer from './visualizer'
 import { Asset } from './stats'
 import Modules from './modules'
+import { getModules, sumModules } from './calc'
 
 const absolute = css`
   position: absolute;
@@ -67,7 +68,10 @@ const App: FunctionComponent = () => {
     [data]
   )
   // total size of the assets
-  const totalSize = assets.reduce((prev, curr) => prev + curr.size, 0)
+  const totalSize = assets.reduce(
+    (prev, curr) => prev + sumModules(getModules(data.chunks, curr.chunks)),
+    0
+  )
 
   // currently selected asset view
   const [selected, setSelected] = useState(-1)
@@ -87,10 +91,11 @@ const App: FunctionComponent = () => {
                 <Visualizer
                   select={setSelected}
                   assets={assets}
+                  chunks={data.chunks}
                   totalSize={totalSize}
                 />
               ) : (
-                <Modules asset={assets[selected]} data={data} />
+                <Modules asset={assets[selected]} chunks={data.chunks} />
               )
             ) : (
               <Loader onLoad={handleLoad} />
