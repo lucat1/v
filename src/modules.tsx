@@ -4,8 +4,8 @@ import { useMemo } from 'preact/hooks'
 import Body from './body'
 import { Chunk, Asset, Module } from './stats'
 import { format, getModules, sumModules } from './calc'
-import { Title } from './typography'
-import { Ul, Li, Percentage } from './list'
+import { Title, Subtitle } from './typography'
+import { Square, Box } from './square'
 
 interface ModulesProps {
   chunks: Chunk[]
@@ -19,28 +19,35 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
   ])
   const totalSize = useMemo<number>(() => sumModules(modules), [modules])
 
+  const getBigModules = (big = true) => {
+    return modules
+      .sort((a, b) => b.size - a.size)
+      .filter(m => {
+        const percentage = ((m.size / totalSize) * 100).toFixed(1)
+        return big ? Number(percentage) > 10 : Number(percentage) < 10
+      })
+  }
+
   return (
-    <Body>
-      <Title style={{ position: 'sticky', top: 0 }}>
+    <Body
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
+      <Title>
         {asset.name} ~ {format(totalSize)}
       </Title>
-      <Ul>
-        {modules.map((module, i) => {
+      <Subtitle>Click on the rectangles to see each dependency</Subtitle>
+      <Square>
+        {getBigModules().map((module, i) => {
           const percentage = ((module.size / totalSize) * 100).toFixed(1)
 
           return (
-            <Li key={i} title={module.name}>
-              <p>
-                {format(module.size)} => {module.name}
-              </p>
-              <Percentage>
-                <div style={{ width: `${percentage}%` }} />
-                <span>{percentage}%</span>
-              </Percentage>
-            </Li>
+            <Box key={i} size={percentage} title={module.name}>
+              {format(module.size)}
+            </Box>
           )
         })}
-      </Ul>
+        {getBigModules(false).length !== 0 && <Box size={10}>...</Box>}
+      </Square>
     </Body>
   )
 }

@@ -16,3 +16,8 @@ export const Title = styled('h1')`
   padding: 1rem;
   background-color: white;
 `
+
+export const Subtitle = styled('h4')`
+  margin: 0 0 2rem 0;
+  font-weight: 400;
+`
