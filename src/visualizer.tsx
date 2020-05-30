@@ -3,7 +3,7 @@ import { h, FunctionComponent } from 'preact'
 import Body from './body'
 import { Asset, Chunk } from './stats'
 import { format, sumModules, getModules } from './calc'
-import { Percentage, Li, Ul } from './list'
+import { Ul, List } from './list'
 import { Title } from './typography'
 
 interface VisualizerProps {
@@ -29,15 +29,9 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({
         const percentage = ((size / totalSize) * 100).toFixed(1)
 
         return (
-          <Li key={i} onClick={() => select(i)}>
-            <p>
-              {asset.name} ~ {format(size)}
-            </p>
-            <Percentage>
-              <div style={{ width: `${percentage}%` }} />
-              <span>{percentage}%</span>
-            </Percentage>
-          </Li>
+          <List key={i} percentage={percentage} onClick={() => select(i)}>
+            {asset.name} ~ {format(size)}
+          </List>
         )
       })}
     </Ul>

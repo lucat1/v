@@ -1,9 +1,8 @@
 import { styled } from 'goober'
 
 export const Square = styled('div')`
-  width: calc(50vw + 0.625rem);
-  height: 50vh;
-  margin: -0.625rem 0 0 -0.625rem;
+  width: 50vw;
+  margin: -0.625rem 0 2rem -0.625rem;
   display: inline-flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -13,22 +12,22 @@ export const Square = styled('div')`
   }
 
   @media (max-width: 600px) {
-    width: calc(95vw + 0.625rem);
+    width: 95vw;
   }
 `
 
 export const Box = styled('div')`
-  width: ${props => props.size + '%'};
-  height: ${props => props.size + '%'};
+  width: ${props => props['data-size'] + '%'};
+  padding: ${props => props['data-size'] / 4 + '%'};
+  min-width: 3.125rem;
+  max-height: 6.25rem;
   background: #6a7de1;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 500;
-  transition: transform 150ms;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  transition: transform 200ms, opacity 300ms;
+  opacity: 0;
+  transform: scale(0);
 `

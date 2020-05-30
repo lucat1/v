@@ -1,11 +1,12 @@
 import { h, FunctionComponent } from 'preact'
-import { useMemo } from 'preact/hooks'
+import { useMemo, useState } from 'preact/hooks'
 
 import Body from './body'
 import { Chunk, Asset, Module } from './stats'
 import { format, getModules, sumModules } from './calc'
 import { Title, Subtitle } from './typography'
 import { Square, Box } from './square'
+import { Ul, List } from './list'
 
 interface ModulesProps {
   chunks: Chunk[]
@@ -19,11 +20,16 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
   ])
   const totalSize = useMemo<number>(() => sumModules(modules), [modules])
 
+  const [big, setBig] = useState(null)
+  const [id, setId] = useState(0)
+
+  const getPerc = (m: Module) => ((m.size / totalSize) * 100).toFixed(1)
+
   const getBigModules = (big = true) => {
     return modules
       .sort((a, b) => b.size - a.size)
-      .filter(m => {
-        const percentage = ((m.size / totalSize) * 100).toFixed(1)
+      .filter(module => {
+        const percentage = getPerc(module)
         return big ? Number(percentage) > 10 : Number(percentage) < 10
       })
   }
@@ -37,17 +43,43 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
       </Title>
       <Subtitle>Click on the rectangles to see each dependency</Subtitle>
       <Square>
-        {getBigModules().map((module, i) => {
-          const percentage = ((module.size / totalSize) * 100).toFixed(1)
+        {/* Render big modules (more than 10%) */}
+        {getBigModules().map((module, i) => (
+          <Box
+            key={i}
+            data-size={getPerc(module)}
+            title={module.name}
+            onClick={() => {
+              setBig(true)
+              setId(i)
+            }}
+          >
+            {format(module.size)}
+          </Box>
+        ))}
 
-          return (
-            <Box key={i} size={percentage} title={module.name}>
-              {format(module.size)}
-            </Box>
-          )
-        })}
-        {getBigModules(false).length !== 0 && <Box size={10}>...</Box>}
+        {/* Render small modules (less than 10%) */}
+        {getBigModules(false).length !== 0 && (
+          <Box data-size={10} onClick={() => setBig(false)}>
+            ...
+          </Box>
+        )}
       </Square>
+      <Ul>
+        {big === null ? null : big === true ? (
+          <List percentage={getPerc(getBigModules()[id])}>
+            {format(getBigModules()[id].size)} => {getBigModules()[id].name}
+          </List>
+        ) : (
+          getBigModules(false).map((module, i) => {
+            return (
+              <List key={i} percentage={getPerc(module)}>
+                {format(module.size)} => {module.name}
+              </List>
+            )
+          })
+        )}
+      </Ul>
     </Body>
   )
 }

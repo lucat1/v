@@ -1,6 +1,8 @@
+import { h } from 'preact'
 import { styled } from 'goober'
 
 export const Ul = styled('ul')`
+  width: 100%;
   padding: 0;
   margin: 0;
   list-style-type: none;
@@ -42,3 +44,13 @@ export const Percentage = styled('div')`
     margin-left: 0.25rem;
   }
 `
+
+export const List = ({ percentage, ...props }) => (
+  <Li {...props}>
+    <p>{props.children}</p>
+    <Percentage>
+      <div style={{ width: `${percentage}%` }} />
+      <span>{percentage}%</span>
+    </Percentage>
+  </Li>
+)

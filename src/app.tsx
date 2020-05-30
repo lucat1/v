@@ -35,6 +35,14 @@ const absolute = css`
     transform: translateX(-100%);
     transition: transform 300ms ease-in-out;
   }
+
+  .view-enter-done div[data-size] {
+    opacity: 1;
+    transform: scale(1);
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 `
 
 const Container = styled('div')`
