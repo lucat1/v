@@ -49,9 +49,7 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
             key={i}
             data-size={getPerc(module)}
             title={module.name}
-            style={{
-              transition: `opacity 300ms, transform 250ms ${150 * i}ms`
-            }}
+            delay={i}
             onClick={() => {
               setBig(true)
               setId(i)
@@ -65,11 +63,7 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
         {getBigModules(false).length !== 0 && (
           <Box
             data-size={10}
-            style={{
-              transition: `opacity 300ms, transform 250ms ${
-                150 * getBigModules().length
-              }ms`
-            }}
+            delay={getBigModules().length}
             onClick={() => setBig(false)}
           >
             ...

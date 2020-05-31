@@ -37,10 +37,12 @@ const absolute = css`
   }
 
   .view-enter-done div[data-size] {
-    opacity: 1;
     transform: scale(1);
+
     &:hover {
-      transform: scale(1.1);
+      &::before {
+        transform: translateY(0);
+      }
     }
   }
 `

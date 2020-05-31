@@ -23,10 +23,26 @@ export const Box = styled('div')`
   max-height: 6.25rem;
   background: #6a7de1;
   cursor: pointer;
+  overflow: hidden;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 500;
-  opacity: 0;
   transform: scale(0);
+  transition: transform 250ms;
+  transition-delay: ${(props: { delay: number }) => props.delay * 150 + 'ms'};
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #8ed6fb;
+    z-index: -1;
+    transform: translateY(-100%);
+    transition: transform 250ms;
+  }
 `
