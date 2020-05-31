@@ -27,7 +27,6 @@ export const Box = styled('div')`
   justify-content: center;
   align-items: center;
   font-weight: 500;
-  transition: transform 200ms, opacity 300ms;
   opacity: 0;
   transform: scale(0);
 `

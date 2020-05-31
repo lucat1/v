@@ -49,6 +49,9 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
             key={i}
             data-size={getPerc(module)}
             title={module.name}
+            style={{
+              transition: `opacity 300ms, transform 250ms ${150 * i}ms`
+            }}
             onClick={() => {
               setBig(true)
               setId(i)
@@ -60,20 +63,31 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
 
         {/* Render small modules (less than 10%) */}
         {getBigModules(false).length !== 0 && (
-          <Box data-size={10} onClick={() => setBig(false)}>
+          <Box
+            data-size={10}
+            style={{
+              transition: `opacity 300ms, transform 250ms ${
+                150 * getBigModules().length
+              }ms`
+            }}
+            onClick={() => setBig(false)}
+          >
             ...
           </Box>
         )}
       </Square>
       <Ul>
         {big === null ? null : big === true ? (
-          <List percentage={getPerc(getBigModules()[id])}>
+          <List
+            percentage={getPerc(getBigModules()[id])}
+            title={getBigModules()[id].name}
+          >
             {format(getBigModules()[id].size)} => {getBigModules()[id].name}
           </List>
         ) : (
           getBigModules(false).map((module, i) => {
             return (
-              <List key={i} percentage={getPerc(module)}>
+              <List key={i} percentage={getPerc(module)} title={module.name}>
                 {format(module.size)} => {module.name}
               </List>
             )
