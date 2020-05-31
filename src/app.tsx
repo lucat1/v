@@ -10,7 +10,7 @@ import { Asset } from './stats'
 import Modules from './modules'
 import { getModules, sumModules } from './calc'
 
-const absolute = css`
+const TransitionContainer = styled(TransitionGroup)`
   position: absolute;
   left: 0;
   right: 0;
@@ -19,7 +19,8 @@ const absolute = css`
   overflow: hidden;
 
   .view-enter {
-    transform: translateX(100%);
+    transform: ${(props: { selected: number }) =>
+      props.selected >= 0 ? 'translateX(-100%)' : 'translateX(100%)'};
   }
 
   .view-enter-active {
@@ -32,7 +33,8 @@ const absolute = css`
   }
 
   .view-exit-active {
-    transform: translateX(-100%);
+    transform: ${(props: { selected: number }) =>
+      props.selected >= 0 ? 'translateX(100%)' : 'translateX(-100%)'};
     transition: transform 300ms ease-in-out;
   }
 
@@ -60,6 +62,7 @@ const App: FunctionComponent = () => {
   const [data, setData] = useState(null)
   const handleLoad = useCallback((data: Object) => {
     setData(data)
+    setSelected(-1)
   }, [])
 
   // KEEP
@@ -84,12 +87,21 @@ const App: FunctionComponent = () => {
   )
 
   // currently selected asset view
-  const [selected, setSelected] = useState(-1)
+  const [selected, setSelected] = useState(-2)
+
+  const handleClick = () => {
+    if (selected === -1) {
+      setData(null)
+      setSelected(-2)
+    } else {
+      setSelected(-1)
+    }
+  }
 
   return (
     <Fragment>
-      <Header />
-      <TransitionGroup className={absolute}>
+      <Header onIconClick={handleClick} selected={selected} />
+      <TransitionContainer selected={selected}>
         <CSSTransition
           key={data ? selected : -2}
           timeout={300}
@@ -112,7 +124,7 @@ const App: FunctionComponent = () => {
             )}
           </Container>
         </CSSTransition>
-      </TransitionGroup>
+      </TransitionContainer>
     </Fragment>
   )
 }

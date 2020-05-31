@@ -21,7 +21,7 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({
 }) => (
   <Body>
     <Title>
-      Click on a graph to display its file contents and relative sizes
+      Click on an item to display its file contents and relative sizes
     </Title>
     <Ul>
       {assets.map((asset, i) => {
