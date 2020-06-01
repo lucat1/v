@@ -5,7 +5,8 @@
   "scripts": {
     "prepare": "snowpack install",
     "dev": "snowpack dev",
-    "prettify": "prettier --write src/**/**/*.{ts,tsx,json}"
+    "prettify": "prettier --write src/**/**/*.{ts,tsx,json}",
+    "build": "snowpack build"
   },
   "author": "LucaT <fromzeroluke1@gmail.com",
   "license": "MIT",

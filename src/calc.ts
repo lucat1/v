@@ -37,6 +37,10 @@ export const getModules = (chunks: Chunk[], used: number[]): Module[] =>
 export const sumModules = (modules: Module[]) =>
   modules.reduce((prev, curr) => prev + curr.size, 0)
 
+// properly round numbers to 1 fixed decimal
+export const round = (n: number) =>
+  Number((Math.round((n + 'e1') as any) + 'e-1') as any)
+
 export const pretty = (name: string) => {
   if (/[\\/]node_modules[\\/]/.test(name)) {
     // node_module

@@ -3,7 +3,7 @@ import { useMemo, useState } from 'preact/hooks'
 
 import Body from './body'
 import { Chunk, Asset, Module } from './stats'
-import { format, getModules, sumModules, pretty } from './calc'
+import { format, getModules, sumModules, pretty, round } from './calc'
 import { Title, Subtitle } from './typography'
 import { Square, Box } from './square'
 import { Ul, List } from './list'
@@ -23,7 +23,7 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
   const [big, setBig] = useState(null)
   const [id, setId] = useState(0)
 
-  const getPerc = (m: Module) => ((m.size / totalSize) * 100).toFixed(1)
+  const getPerc = (m: Module): number => round((m.size / totalSize) * 100)
 
   const [bigModules, smallModules] = useMemo<[Module[], Module[]]>(() => {
     const sorted = modules.sort((a, b) => b.size - a.size)
