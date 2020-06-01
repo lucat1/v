@@ -12,9 +12,14 @@ glob`
     -webkit-font-smoothing: antialiased;
   }
 
+  html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     font-size: calc(1rem + .1vw);
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    font-family: 'Fira Code', monospace;
     margin: 0;
     height: 100vh;
   }
