@@ -1,6 +1,6 @@
 import { styled } from 'goober'
 
-export const Button = styled('button')`
+const Button = styled('button')`
   height: 3.5rem;
   align-self: stretch;
   font-size: calc(0.6rem + 1vw);
@@ -12,4 +12,10 @@ export const Button = styled('button')`
   border-top: 2px dashed gray;
   border-bottom-left-radius: 2rem;
   border-bottom-right-radius: 2rem;
+
+  &[disabled] {
+    cursor: default;
+  }
 `
+
+export default Button

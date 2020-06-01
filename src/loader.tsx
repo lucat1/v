@@ -4,7 +4,7 @@ import { styled } from 'goober'
 import { text } from 'promisify-file-reader'
 
 import Body from './body'
-import { Button } from './button'
+import Button from './button'
 import { UploadText } from './typography'
 
 import { Stats } from './stats'
@@ -79,6 +79,13 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
 
     if (error != '') setError('')
     if (onLoad) onLoad(content)
+
+    try {
+      localStorage.setItem('previous', raw)
+    } catch (e) {
+      // TODO: notify the user of failure
+      console.error('Could not save json in the localStorage', e)
+    }
   }
 
   return (
@@ -99,7 +106,18 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
           {dragging ? 'Just drop it!' : error || 'Upload your JSON file here'}
         </UploadText>
 
-        <Button>Check your latest JSON file</Button>
+        <Button
+          disabled={!localStorage.getItem('previous')}
+          onClick={e => {
+            e.preventDefault()
+            e.stopPropagation()
+
+            setError('') // previous savings cannot have errors
+            if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
+          }}
+        >
+          Check your latest JSON file
+        </Button>
       </Container>
       <input
         style={{ display: 'none' }}

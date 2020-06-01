@@ -1,6 +1,6 @@
 import { h, Fragment, FunctionComponent } from 'preact'
 import { useCallback, useState, useMemo } from 'preact/hooks'
-import { styled, css } from 'goober'
+import { styled } from 'goober'
 import { TransitionGroup, CSSTransition } from '@bmp/preact-transition-group'
 
 import Header from './header'
