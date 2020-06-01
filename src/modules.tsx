@@ -25,14 +25,14 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
 
   const getPerc = (m: Module) => ((m.size / totalSize) * 100).toFixed(1)
 
-  const getBigModules = (big = true) => {
-    return modules
-      .sort((a, b) => b.size - a.size)
-      .filter(module => {
-        const percentage = getPerc(module)
-        return big ? Number(percentage) > 10 : Number(percentage) < 10
-      })
-  }
+  const [bigModules, smallModules] = useMemo<[Module[], Module[]]>(() => {
+    const sorted = modules.sort((a, b) => b.size - a.size)
+
+    return [
+      sorted.filter(module => getPerc(module) > 10),
+      sorted.filter(module => getPerc(module) <= 10)
+    ]
+  }, [modules])
 
   return (
     <Body
@@ -44,7 +44,7 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
       <Subtitle>Click on the rectangles to see each dependency</Subtitle>
       <Square>
         {/* Render big modules (more than 10%) */}
-        {getBigModules().map((module, i) => (
+        {bigModules.map((module, i) => (
           <Box
             key={i}
             data-size={getPerc(module)}
@@ -60,10 +60,10 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
         ))}
 
         {/* Render small modules (less than 10%) */}
-        {getBigModules(false).length !== 0 && (
+        {smallModules.length > 0 && (
           <Box
             data-size={10}
-            delay={getBigModules().length}
+            delay={bigModules.length}
             onClick={() => setBig(false)}
           >
             ...
@@ -73,14 +73,13 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
       <Ul>
         {big === null ? null : big === true ? (
           <List
-            percentage={getPerc(getBigModules()[id])}
-            title={getBigModules()[id].name}
+            percentage={getPerc(bigModules[id])}
+            title={bigModules[id].name}
           >
-            {format(getBigModules()[id].size)} =>{' '}
-            {pretty(getBigModules()[id].name)}
+            {format(bigModules[id].size)} => {pretty(bigModules[id].name)}
           </List>
         ) : (
-          getBigModules(false).map((module, i) => {
+          smallModules.map((module, i) => {
             return (
               <List key={i} percentage={getPerc(module)} title={module.name}>
                 {format(module.size)} => {module.name}
