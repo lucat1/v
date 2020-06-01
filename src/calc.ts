@@ -36,3 +36,13 @@ export const getModules = (chunks: Chunk[], used: number[]): Module[] =>
 
 export const sumModules = (modules: Module[]) =>
   modules.reduce((prev, curr) => prev + curr.size, 0)
+
+export const pretty = (name: string) => {
+  if (/[\\/]node_modules[\\/]/.test(name)) {
+    // node_module
+    const str = name.split('node_modules')[1]
+    return str.slice(1, str.length)
+  }
+
+  return name
+}

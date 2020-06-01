@@ -3,7 +3,7 @@ import { useMemo, useState } from 'preact/hooks'
 
 import Body from './body'
 import { Chunk, Asset, Module } from './stats'
-import { format, getModules, sumModules } from './calc'
+import { format, getModules, sumModules, pretty } from './calc'
 import { Title, Subtitle } from './typography'
 import { Square, Box } from './square'
 import { Ul, List } from './list'
@@ -76,7 +76,8 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
             percentage={getPerc(getBigModules()[id])}
             title={getBigModules()[id].name}
           >
-            {format(getBigModules()[id].size)} => {getBigModules()[id].name}
+            {format(getBigModules()[id].size)} =>{' '}
+            {pretty(getBigModules()[id].name)}
           </List>
         ) : (
           getBigModules(false).map((module, i) => {
