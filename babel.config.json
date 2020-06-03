@@ -1,3 +1,8 @@
 {
-  "extends": "@snowpack/app-scripts-preact/babel.config.json"
+  "extends": "@snowpack/app-scripts-preact/babel.config.json",
+  "env": {
+    "production": {
+      "presets": ["minify"]
+    }
+  }
 }
