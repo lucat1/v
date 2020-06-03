@@ -35,9 +35,7 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
   }, [modules])
 
   return (
-    <Body
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-    >
+    <Body style={{ justifyContent: 'unset', alignItems: 'center' }}>
       <Title>
         {asset.name} ~ {format(totalSize)}
       </Title>

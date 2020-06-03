@@ -14,7 +14,7 @@ const Button = styled('button')`
   border-bottom-right-radius: 2rem;
 
   &[disabled] {
-    cursor: default;
+    cursor: not-allowed;
   }
 `
 

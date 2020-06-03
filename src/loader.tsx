@@ -11,11 +11,7 @@ import { Stats } from './stats'
 
 const Container = styled('div')`
   width: 100%;
-  height: 20rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, calc(-50% - 4rem));
+  height: 50vh;
 
   display: flex;
   flex-direction: column;
