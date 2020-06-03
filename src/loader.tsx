@@ -85,7 +85,7 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
   }
 
   return (
-    <Body>
+    <Body style={{ overflow: 'hidden' }}>
       <Container
         onDrop={handleDrop}
         onDragEnter={handleHover(true)}
