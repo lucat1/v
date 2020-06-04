@@ -55,6 +55,7 @@ const Container = styled('div')`
   left: 0;
   height: 100%;
   width: 100vw;
+  overflow-y: auto;
 `
 
 const App: FunctionComponent = () => {
