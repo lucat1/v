@@ -5,9 +5,9 @@ export const UploadText = styled('h2')`
   pointer-events: none;
   display: flex;
   align-items: center;
-  flex: 1;
   text-transform: uppercase;
   text-align: center;
+  transition: color 200ms;
 `
 
 export const Title = styled('h1')`
