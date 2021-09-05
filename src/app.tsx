@@ -1,21 +1,20 @@
-import { h, Fragment, FunctionComponent } from 'preact'
-import { useCallback, useState, useMemo } from 'preact/hooks'
+import { CSSTransition, TransitionGroup } from '@bmp/preact-transition-group'
 import { styled } from 'goober'
-import { TransitionGroup, CSSTransition } from '@bmp/preact-transition-group'
-
+import { FunctionComponent, h } from 'preact'
+import { useCallback, useMemo, useState } from 'preact/hooks'
+import { getModules, sumModules } from './calc'
 import Header from './header'
 import Loader from './loader'
-import Visualizer from './visualizer'
-import { Asset } from './stats'
 import Modules from './modules'
-import { getModules, sumModules } from './calc'
+import { Asset } from './stats'
+import Visualizer from './visualizer'
 
 const TransitionContainer = styled(TransitionGroup)`
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  top: 4rem;
+  top: 5rem;
   overflow: hidden;
 
   .view-enter {
@@ -47,6 +46,12 @@ const TransitionContainer = styled(TransitionGroup)`
       }
     }
   }
+`
+
+const Wrapper = styled('div')`
+  width: 100vw;
+  height: 100vh;
+  background-color: #e7edd6;
 `
 
 const Container = styled('div')`
@@ -99,7 +104,7 @@ const App: FunctionComponent = () => {
   }
 
   return (
-    <Fragment>
+    <Wrapper>
       <Header onIconClick={handleClick} selected={selected} />
       <TransitionContainer selected={selected}>
         <CSSTransition
@@ -125,7 +130,7 @@ const App: FunctionComponent = () => {
           </Container>
         </CSSTransition>
       </TransitionContainer>
-    </Fragment>
+    </Wrapper>
   )
 }
 

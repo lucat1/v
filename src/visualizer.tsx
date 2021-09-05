@@ -1,9 +1,8 @@
-import { h, FunctionComponent } from 'preact'
-
-import Body from './body'
+import { FunctionComponent, h } from 'preact'
+import { format, getModules, sumModules } from './calc'
+import { List, Ul } from './list'
+import Body from './main'
 import { Asset, Chunk } from './stats'
-import { format, sumModules, getModules } from './calc'
-import { Ul, List } from './list'
 import { Title } from './typography'
 
 interface VisualizerProps {

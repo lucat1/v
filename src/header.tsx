@@ -1,23 +1,24 @@
-import { h, FunctionComponent } from 'preact'
 import { styled } from 'goober'
+import { h } from 'preact'
 
-const H = styled('header')`
+const Nav = styled('header')`
   display: flex;
   justify-content: left;
   align-items: center;
-  width: 75%;
-  height: 4rem;
+  width: 85%;
+  height: 5rem;
   margin: 0 auto;
   user-select: none;
   transition: width 150ms;
 
   span {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 0.75rem + 3.3333vw, 2.5rem);
     margin-left: 1rem;
   }
 
   @media (max-width: 600px) {
-    width: 95%;
+    width: 100%;
+    padding: 0 0.5rem;
   }
 `
 
@@ -36,7 +37,7 @@ const Image = styled('img')`
 `
 
 const Header = ({ onIconClick, selected }) => (
-  <H>
+  <Nav>
     {selected !== -2 && (
       <BackIcon
         xmlns='http://www.w3.org/2000/svg'
@@ -51,8 +52,8 @@ const Header = ({ onIconClick, selected }) => (
     )}
 
     <Image src='/webpack.svg' />
-    <span>stats</span>
-  </H>
+    <span>webpack stats</span>
+  </Nav>
 )
 
 export default Header

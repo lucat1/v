@@ -1,14 +1,12 @@
-import { h, FunctionComponent } from 'preact'
-import { useCallback, useRef, useState } from 'preact/hooks'
 import { styled } from 'goober'
+import { FunctionComponent, h } from 'preact'
+import { useCallback, useRef, useState } from 'preact/hooks'
 import { text } from 'promisify-file-reader'
-
-import Body from './body'
-import Button from './button'
-import { UploadText } from './typography'
-
+import Lines from './lines'
+import Main from './main'
+import Panels from './panels'
 import { Stats } from './stats'
-import { UploadContainer } from './uploadContainer'
+import { HomeText } from './typography'
 
 const Container = styled('div')`
   width: 100%;
@@ -40,6 +38,7 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
   const handleClick = useCallback(() => {
     ref.current.click()
   }, [ref])
+
   const handleSubmit = useCallback(() => {
     load(ref.current.files)
   }, [ref])
@@ -51,21 +50,23 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
     setDragging(val)
   }
 
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     stop(e)
     setDragging(false)
     load(e.dataTransfer.files)
-  }, [])
+  }
 
   const load = async (files: FileList) => {
     if (!files[0]) {
       setError('No file provided')
       return
     }
+
     if (error != '') setError('')
 
     const raw = await text(files[0])
     let content = {} as Stats
+
     try {
       content = JSON.parse(raw)
     } catch (err) {
@@ -86,8 +87,8 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
   }
 
   return (
-    <Body>
-      <Container
+    <Main>
+      {/* <Container
         onClick={handleClick}
         style={{
           borderStyle: dragging ? 'solid' : 'dashed',
@@ -130,13 +131,15 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
         </Button>
       </Container>
       <input
-        style={{ display: 'none' }}
-        ref={ref}
-        onChange={handleSubmit}
-        id='stats-file'
-        type='file'
-      />
-    </Body>
+      style={{ display: 'none' }}
+      ref={ref}
+      onChange={handleSubmit}
+      id='stats-file' type='file' />
+			*/}
+      <HomeText>Drop a JSON file to visualize it.</HomeText>
+      <Lines />
+      <Panels />
+    </Main>
   )
 }
 

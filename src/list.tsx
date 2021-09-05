@@ -1,5 +1,5 @@
-import { h } from 'preact'
 import { styled } from 'goober'
+import { h } from 'preact'
 
 export const Ul = styled('ul')`
   width: 100%;

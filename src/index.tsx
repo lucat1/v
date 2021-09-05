@@ -1,9 +1,8 @@
+import { glob, setup } from 'goober'
 import { h, render } from 'preact'
 import 'preact/devtools'
-
 import App from './app'
 
-import { setup, glob } from 'goober'
 setup(h)
 
 glob`
@@ -18,11 +17,18 @@ glob`
   }
 
   body {
-    font-size: calc(1rem + .1vw);
+    font-size: 16px;
     font-family: 'Fira Code', monospace;
     margin: 0;
     height: 100vh;
   }
+
+	@keyframes appear {
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
 `
 
 render(<App />, document.body)

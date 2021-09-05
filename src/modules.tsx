@@ -1,12 +1,11 @@
-import { h, FunctionComponent } from 'preact'
+import { FunctionComponent, h } from 'preact'
 import { useMemo, useState } from 'preact/hooks'
-
-import Body from './body'
-import { Chunk, Asset, Module } from './stats'
-import { format, getModules, sumModules, pretty, round } from './calc'
-import { Title, Subtitle } from './typography'
-import { Square, Box } from './square'
-import { Ul, List } from './list'
+import { format, getModules, pretty, round, sumModules } from './calc'
+import { List, Ul } from './list'
+import Body from './main'
+import { Box, Square } from './square'
+import { Asset, Chunk, Module } from './stats'
+import { Subtitle, Title } from './typography'
 
 interface ModulesProps {
   chunks: Chunk[]
@@ -35,7 +34,7 @@ const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
   }, [modules])
 
   return (
-    <Body style={{ justifyContent: 'unset', alignItems: 'center' }}>
+    <Body style={{ alignItems: 'center' }}>
       <Title>
         {asset.name} ~ {format(totalSize)}
       </Title>
