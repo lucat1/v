@@ -1,5 +1,6 @@
 import { styled } from 'goober'
 import { h } from 'preact'
+import { MouseEventHandler } from 'react'
 
 const Holder = styled('div')`
   display: flex;
@@ -27,7 +28,7 @@ const Square = styled('div')`
   div {
     opacity: 0;
     transform: scale(0);
-    background: #b9a6d1;
+    background: var(--secondary);
     box-shadow: 0px 4px 12px 1px rgba(0, 0, 0, 0.25);
     animation: appear 400ms ease-out forwards;
   }
@@ -74,31 +75,32 @@ const Buttons = styled('div')`
   animation: appear 250ms ease-out 1000ms forwards;
 
   button:first-child {
-    border: 0.25rem dashed #b9a6d1;
+    border: 0.25rem dashed var(--secondary);
     border-bottom: 0;
     border-top-left-radius: 1.875rem;
     border-top-right-radius: 1.875rem;
   }
 
   button:nth-child(2) {
-    border: 0.25rem dashed #b9a6d1;
+    border: 0.25rem dashed var(--secondary);
   }
 
   button:last-child {
-    border: 0.25rem dashed #b9a6d1;
+    border: 0.25rem dashed var(--secondary);
     border-top: 0;
     border-bottom-left-radius: 1.875rem;
     border-bottom-right-radius: 1.875rem;
   }
 `
 
-const Button = styled('Button')`
+const Button = styled('button')`
   font-size: clamp(1rem, 0.625rem + 1.6667vw, 1.5rem);
-  padding: 2rem 0.5rem;
   outline: none;
   cursor: pointer;
-  background-color: #e7edd6;
+  padding: 2rem 0.5rem;
+  background-color: var(--primary);
   transition: background-color 150ms;
+  color: inherit;
 
   &:hover {
     background-color: rgba(185, 166, 209, 0.4);
@@ -109,7 +111,13 @@ const Button = styled('Button')`
   }
 `
 
-const Panels = () => (
+interface IProps {
+  onUpload: MouseEventHandler<HTMLButtonElement>
+  onLatestUpload: MouseEventHandler<HTMLButtonElement>
+  onExampleUpload: MouseEventHandler<HTMLButtonElement>
+}
+
+const Panels = ({ onUpload, onLatestUpload, onExampleUpload }: IProps) => (
   <Holder>
     <Square>
       <div></div>
@@ -119,9 +127,9 @@ const Panels = () => (
       <div></div>
     </Square>
     <Buttons>
-      <Button>Upload a JSON file</Button>
-      <Button>Check your latest upload</Button>
-      <Button>Show an example visualization</Button>
+      <Button onClick={onUpload}>Upload a JSON file</Button>
+      <Button onClick={onLatestUpload}>Check your latest upload</Button>
+      <Button onClick={onExampleUpload}>Show an example visualization</Button>
     </Buttons>
   </Holder>
 )

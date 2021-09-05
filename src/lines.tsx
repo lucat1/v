@@ -6,7 +6,7 @@ const Wrapper = styled('div')`
 
   div {
     height: 1.125rem;
-    background-color: #b9a6d1;
+    background-color: var(--secondary);
     margin: 0.5rem 0;
     opacity: 0;
     transform: scale(0);

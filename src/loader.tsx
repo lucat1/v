@@ -34,6 +34,7 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
   const ref = useRef<HTMLInputElement>()
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
+  const [switchedTheme, setSwitchedTheme] = useState(false)
 
   const handleClick = useCallback(() => {
     ref.current.click()
@@ -48,6 +49,14 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
   ) => {
     stop(e)
     setDragging(val)
+  }
+
+  const handleLatestUpload = e => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    setError('') // previous savings cannot have errors
+    if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -84,6 +93,22 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
       // TODO: notify the user of failure
       console.error('Could not save json in the localStorage', e)
     }
+  }
+
+  const handleThemeChange = () => {
+    setSwitchedTheme(!switchedTheme)
+
+    document.body.style.setProperty(
+      '--primary',
+      switchedTheme ? '#e7edd6' : 'magenta'
+    )
+
+    document.body.style.setProperty(
+      '--secondary',
+      switchedTheme ? '#b9a6d1' : 'teal'
+    )
+
+    document.body.style.color = switchedTheme ? 'black' : 'white'
   }
 
   return (
@@ -130,15 +155,24 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
           Check your latest JSON file
         </Button>
       </Container>
-      <input
-      style={{ display: 'none' }}
-      ref={ref}
-      onChange={handleSubmit}
-      id='stats-file' type='file' />
-			*/}
+		*/}
       <HomeText>Drop a JSON file to visualize it.</HomeText>
+
       <Lines />
-      <Panels />
+
+      <Panels
+        onUpload={handleClick}
+        onLatestUpload={handleLatestUpload}
+        onExampleUpload={() => console.log('show example')}
+      />
+
+      <input
+        style={{ display: 'none' }}
+        ref={ref}
+        onChange={handleSubmit}
+        id='stats-file'
+        type='file'
+      />
     </Main>
   )
 }

@@ -21,6 +21,9 @@ glob`
     font-family: 'Fira Code', monospace;
     margin: 0;
     height: 100vh;
+		color: black;
+		--primary: #e7edd6;
+		--secondary: #b9a6d1;
   }
 
 	@keyframes appear {
