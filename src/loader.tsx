@@ -1,5 +1,5 @@
 import { styled } from 'goober'
-import { FunctionComponent, h } from 'preact'
+import { h } from 'preact'
 import { useCallback, useRef, useState } from 'preact/hooks'
 import { text } from 'promisify-file-reader'
 import Lines from './lines'
@@ -7,6 +7,8 @@ import Main from './main'
 import Panels from './panels'
 import { Stats } from './stats'
 import { HomeText } from './typography'
+// @ts-ignore
+import exampleFile from '/stats.json'
 
 const Container = styled('div')`
   width: 100%;
@@ -30,7 +32,7 @@ interface LoaderProps {
   onLoad(json: Stats): void
 }
 
-const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
+const Loader = ({ onLoad }: LoaderProps) => {
   const ref = useRef<HTMLInputElement>()
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
@@ -52,11 +54,20 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
   }
 
   const handleLatestUpload = e => {
-    e.preventDefault()
-    e.stopPropagation()
+    stop(e)
 
     setError('') // previous savings cannot have errors
     if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
+  }
+
+  const handleExampleUpload = () => {
+    const blob = new Blob([JSON.stringify(exampleFile)], {
+      type: 'application/json'
+    })
+
+    const file = new File([blob], 'stats.json')
+
+    load([file] as any, true)
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -65,7 +76,7 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
     load(e.dataTransfer.files)
   }
 
-  const load = async (files: FileList) => {
+  const load = async (files: FileList, isExample?: boolean) => {
     if (!files[0]) {
       setError('No file provided')
       return
@@ -80,7 +91,6 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
       content = JSON.parse(raw)
     } catch (err) {
       setError('Invalid file contents')
-      console.error(err)
       return
     }
 
@@ -88,7 +98,7 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
     if (onLoad) onLoad(content)
 
     try {
-      localStorage.setItem('previous', raw)
+      if (!isExample) localStorage.setItem('previous', raw)
     } catch (e) {
       // TODO: notify the user of failure
       console.error('Could not save json in the localStorage', e)
@@ -163,7 +173,7 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
       <Panels
         onUpload={handleClick}
         onLatestUpload={handleLatestUpload}
-        onExampleUpload={() => console.log('show example')}
+        onExampleUpload={handleExampleUpload}
       />
 
       <input

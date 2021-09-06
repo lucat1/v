@@ -32,10 +32,6 @@ const BackIcon = styled('svg')`
   }
 `
 
-const Image = styled('img')`
-  height: 3rem;
-`
-
 const Header = ({ onIconClick, selected }) => (
   <Nav>
     {selected !== -2 && (
@@ -51,7 +47,7 @@ const Header = ({ onIconClick, selected }) => (
       </BackIcon>
     )}
 
-    <Image src='/webpack.svg' />
+    <img style={{ height: '3rem' }} src='/webpack.svg' />
     <span>webpack stats</span>
   </Nav>
 )
