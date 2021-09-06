@@ -1,9 +1,10 @@
 import { styled } from 'goober'
 import { h } from 'preact'
-import { useCallback, useRef, useState } from 'preact/hooks'
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks'
 import { text } from 'promisify-file-reader'
 import Lines from './lines'
 import Main from './main'
+import Overlay from './overlay'
 import Panels from './panels'
 import { Stats } from './stats'
 import { HomeText } from './typography'
@@ -36,6 +37,14 @@ const Loader = ({ onLoad }: LoaderProps) => {
   const [error, setError] = useState('')
   const [switchedTheme, setSwitchedTheme] = useState(false)
 
+  useEffect(() => {
+    window.addEventListener('dragenter', (e: any) => handleHover(true)(e))
+
+    return () => {
+      window.removeEventListener('dragenter', (e: any) => handleHover(true)(e))
+    }
+  }, [])
+
   const handleClick = useCallback(() => {
     ref.current.click()
   }, [ref])
@@ -54,8 +63,10 @@ const Loader = ({ onLoad }: LoaderProps) => {
   const handleLatestUpload = e => {
     stop(e)
 
-    if (localStorage.getItem('previous') == null)
+    if (localStorage.getItem('previous') == null) {
       setError("You haven't uploaded a file yet")
+      return
+    }
 
     if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
   }
@@ -180,6 +191,13 @@ const Loader = ({ onLoad }: LoaderProps) => {
         onChange={handleSubmit}
         id='stats-file'
         type='file'
+      />
+
+      <Overlay
+        data-dragging={dragging}
+        onDrop={handleDrop}
+        onDragOver={stop}
+        onDragLeave={handleHover(false)}
       />
     </Main>
   )
