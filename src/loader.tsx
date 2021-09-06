@@ -7,8 +7,6 @@ import Main from './main'
 import Panels from './panels'
 import { Stats } from './stats'
 import { HomeText } from './typography'
-// @ts-ignore
-import exampleFile from '/stats.json'
 
 const Container = styled('div')`
   width: 100%;
@@ -56,14 +54,14 @@ const Loader = ({ onLoad }: LoaderProps) => {
   const handleLatestUpload = e => {
     stop(e)
 
-    setError('') // previous savings cannot have errors
+    if (localStorage.getItem('previous') == null)
+      setError("You haven't uploaded a file yet")
+
     if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
   }
 
-  const handleExampleUpload = () => {
-    const blob = new Blob([JSON.stringify(exampleFile)], {
-      type: 'application/json'
-    })
+  const handleExampleUpload = async () => {
+    const blob = await (await fetch('/stats.json')).blob()
 
     const file = new File([blob], 'stats.json')
 
@@ -100,8 +98,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
     try {
       if (!isExample) localStorage.setItem('previous', raw)
     } catch (e) {
-      // TODO: notify the user of failure
-      console.error('Could not save json in the localStorage', e)
+      setError('Could not save the file in local storage')
     }
   }
 
@@ -174,6 +171,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
         onUpload={handleClick}
         onLatestUpload={handleLatestUpload}
         onExampleUpload={handleExampleUpload}
+        errorText={error}
       />
 
       <input

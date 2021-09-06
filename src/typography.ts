@@ -28,3 +28,12 @@ export const HomeText = styled('h1')`
   margin: 0;
   padding: 1.5rem 0;
 `
+
+export const ErrorText = styled('span')`
+  font-size: clamp(0.8rem, 0.725rem + 0.3333vw, 0.9rem);
+  color: #f81d1d;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+`

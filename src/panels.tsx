@@ -1,6 +1,7 @@
 import { styled } from 'goober'
 import { h } from 'preact'
 import { MouseEventHandler } from 'react'
+import { ErrorText } from './typography'
 
 const Holder = styled('div')`
   display: flex;
@@ -101,6 +102,7 @@ const Button = styled('button')`
   background-color: var(--primary);
   transition: background-color 150ms;
   color: inherit;
+  position: relative;
 
   &:hover {
     background-color: rgba(185, 166, 209, 0.4);
@@ -115,9 +117,15 @@ interface IProps {
   onUpload: MouseEventHandler<HTMLButtonElement>
   onLatestUpload: MouseEventHandler<HTMLButtonElement>
   onExampleUpload: MouseEventHandler<HTMLButtonElement>
+  errorText: string
 }
 
-const Panels = ({ onUpload, onLatestUpload, onExampleUpload }: IProps) => (
+const Panels = ({
+  onUpload,
+  onLatestUpload,
+  onExampleUpload,
+  errorText
+}: IProps) => (
   <Holder>
     <Square>
       <div></div>
@@ -129,6 +137,7 @@ const Panels = ({ onUpload, onLatestUpload, onExampleUpload }: IProps) => (
     <Buttons>
       <Button onClick={onUpload}>Upload a JSON file</Button>
       <Button onClick={onLatestUpload}>Check your latest upload</Button>
+      <ErrorText>{errorText}</ErrorText>
       <Button onClick={onExampleUpload}>Show an example visualization</Button>
     </Buttons>
   </Holder>
