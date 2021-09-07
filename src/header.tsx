@@ -24,11 +24,16 @@ const Nav = styled('header')`
 
 const BackIcon = styled('svg')`
   cursor: pointer;
-  transition: background-color 150ms;
+  transition: filter 150ms;
   margin-right: 1rem;
+  border-radius: 50%;
+  padding: 0.5rem;
+  color: inherit;
+  fill: currentColor;
+  background-color: var(--primary);
 
   &:hover {
-    background-color: #e3e3e3;
+    filter: brightness(90%);
   }
 `
 
@@ -37,8 +42,8 @@ const Header = ({ onIconClick, selected }) => (
     {selected !== -2 && (
       <BackIcon
         xmlns='http://www.w3.org/2000/svg'
-        width='36'
-        height='36'
+        width='48'
+        height='48'
         viewBox='0 0 36 36'
         onClick={onIconClick}
       >

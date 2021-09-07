@@ -9,7 +9,7 @@ import Panels from './panels'
 import { Stats } from './stats'
 import Toggle from './toggle'
 import ToggleGroup from './toggleGroup'
-import { HomeText } from './typography'
+import { HomeTitle } from './typography'
 
 const Container = styled('div')`
   width: 100%;
@@ -136,7 +136,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
 
   return (
     <Main>
-      <HomeText>Drop a JSON file to visualize it.</HomeText>
+      <HomeTitle>Drop a JSON file to visualize it.</HomeTitle>
 
       <Lines />
 

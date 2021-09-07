@@ -11,10 +11,10 @@ export const UploadText = styled('h2')`
 `
 
 export const Title = styled('h1')`
-  font-size: calc(1rem + 1vw);
+  font-size: clamp(1.5rem, 0.375rem + 5vw, 3rem);
+  text-align: center;
+  margin: 2rem 0;
   font-weight: 500;
-  padding: 1rem;
-  background-color: white;
 `
 
 export const Subtitle = styled('h4')`
@@ -22,7 +22,7 @@ export const Subtitle = styled('h4')`
   font-weight: 400;
 `
 
-export const HomeText = styled('h1')`
+export const HomeTitle = styled('h1')`
   font-size: clamp(1rem, 0.625rem + 1.6667vw, 1.5rem);
   text-align: center;
   margin: 0;

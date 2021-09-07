@@ -1,7 +1,7 @@
-import { FunctionComponent, h } from 'preact'
+import { h } from 'preact'
 import { format, getModules, sumModules } from './calc'
 import { List, Ul } from './list'
-import Body from './main'
+import Main from './main'
 import { Asset, Chunk } from './stats'
 import { Title } from './typography'
 
@@ -12,16 +12,9 @@ interface VisualizerProps {
   select: (i: number) => void
 }
 
-const Visualizer: FunctionComponent<VisualizerProps> = ({
-  assets,
-  chunks,
-  totalSize,
-  select
-}) => (
-  <Body>
-    <Title>
-      Click on an item to display its file contents and relative sizes
-    </Title>
+const Visualizer = ({ assets, chunks, totalSize, select }: VisualizerProps) => (
+  <Main>
+    <Title>Total file size: {format(totalSize)}</Title>
     <Ul>
       {assets.map((asset, i) => {
         const size = sumModules(getModules(chunks, asset.chunks))
@@ -34,7 +27,7 @@ const Visualizer: FunctionComponent<VisualizerProps> = ({
         )
       })}
     </Ul>
-  </Body>
+  </Main>
 )
 
 export default Visualizer
