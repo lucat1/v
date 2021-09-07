@@ -100,16 +100,16 @@ const Button = styled('button')`
   cursor: pointer;
   padding: 2rem 0.5rem;
   background-color: var(--primary);
-  transition: background-color 150ms;
+  transition: filter 150ms;
   color: inherit;
   position: relative;
 
   &:hover {
-    background-color: rgba(185, 166, 209, 0.4);
+    filter: brightness(90%);
   }
 
   &:focus {
-    background-color: rgba(185, 166, 209, 0.65);
+    filter: brightness(85%);
   }
 `
 

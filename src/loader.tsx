@@ -7,6 +7,8 @@ import Main from './main'
 import Overlay from './overlay'
 import Panels from './panels'
 import { Stats } from './stats'
+import Toggle from './toggle'
+import ToggleGroup from './toggleGroup'
 import { HomeText } from './typography'
 
 const Container = styled('div')`
@@ -38,10 +40,10 @@ const Loader = ({ onLoad }: LoaderProps) => {
   const [switchedTheme, setSwitchedTheme] = useState(false)
 
   useEffect(() => {
-    window.addEventListener('dragenter', (e: any) => handleHover(true)(e))
+    window.addEventListener('dragenter', handleDragEnter)
 
     return () => {
-      window.removeEventListener('dragenter', (e: any) => handleHover(true)(e))
+      window.removeEventListener('dragenter', handleDragEnter)
     }
   }, [])
 
@@ -53,11 +55,14 @@ const Loader = ({ onLoad }: LoaderProps) => {
     load(ref.current.files)
   }, [ref])
 
-  const handleHover = (val: boolean) => (
-    e: React.DragEvent<HTMLDivElement>
-  ) => {
+  const handleDragEnter = e => {
     stop(e)
-    setDragging(val)
+    setDragging(true)
+  }
+
+  const handleDragLeave = e => {
+    stop(e)
+    setDragging(false)
   }
 
   const handleLatestUpload = e => {
@@ -116,6 +121,8 @@ const Loader = ({ onLoad }: LoaderProps) => {
   const handleThemeChange = () => {
     setSwitchedTheme(!switchedTheme)
 
+    document.body.style.color = switchedTheme ? 'black' : 'white'
+
     document.body.style.setProperty(
       '--primary',
       switchedTheme ? '#e7edd6' : 'magenta'
@@ -125,55 +132,10 @@ const Loader = ({ onLoad }: LoaderProps) => {
       '--secondary',
       switchedTheme ? '#b9a6d1' : 'teal'
     )
-
-    document.body.style.color = switchedTheme ? 'black' : 'white'
   }
 
   return (
     <Main>
-      {/* <Container
-        onClick={handleClick}
-        style={{
-          borderStyle: dragging ? 'solid' : 'dashed',
-          borderColor: error && !dragging ? 'red' : 'grey',
-          color: error && !dragging ? 'red' : 'black'
-        }}
-      >
-        <UploadContainer
-          onDrop={handleDrop}
-          onDragEnter={handleHover(true)}
-          onDragOver={stop}
-          onDragLeave={handleHover(false)}
-        >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='48'
-            height='48'
-            viewBox='0 0 48 48'
-            style={{ fill: error && !dragging ? 'red' : 'black' }}
-          >
-            <path d='M12 4C9.79 4 8.02 5.79 8.02 8L8 40c0 2.21 1.77 4 3.98 4H36c2.21 0 4-1.79 4-4V16L28 4H12zm14 14V7l11 11H26z' />
-            <path d='M0 0h48v48H0z' fill='none' />
-          </svg>
-          <UploadText>
-            {dragging ? 'Just drop it!' : error || 'Upload your JSON file here'}
-          </UploadText>
-        </UploadContainer>
-
-        <Button
-          disabled={!localStorage.getItem('previous')}
-          onClick={e => {
-            e.preventDefault()
-            e.stopPropagation()
-
-            setError('') // previous savings cannot have errors
-            if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
-          }}
-        >
-          Check your latest JSON file
-        </Button>
-      </Container>
-		*/}
       <HomeText>Drop a JSON file to visualize it.</HomeText>
 
       <Lines />
@@ -193,11 +155,25 @@ const Loader = ({ onLoad }: LoaderProps) => {
         type='file'
       />
 
+      <ToggleGroup>
+        <Toggle
+          content={['Theme', 'Light', 'Dark']}
+          checked={switchedTheme}
+          onChange={handleThemeChange}
+        />
+
+        <Toggle
+          content={['Sounds', 'On', 'Off']}
+          checked={false}
+          onChange={() => console.log('sounds')}
+        />
+      </ToggleGroup>
+
       <Overlay
         data-dragging={dragging}
         onDrop={handleDrop}
         onDragOver={stop}
-        onDragLeave={handleHover(false)}
+        onDragLeave={handleDragLeave}
       />
     </Main>
   )
