@@ -37,14 +37,9 @@ const TransitionContainer = styled(TransitionGroup)`
     transition: transform 300ms ease-in-out;
   }
 
-  .view-enter-done div[data-size] {
+  .view-enter-done div[data-delay] {
+    opacity: 1;
     transform: scale(1);
-
-    &:hover {
-      &::before {
-        transform: translateY(0);
-      }
-    }
   }
 `
 

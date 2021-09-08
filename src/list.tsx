@@ -8,7 +8,7 @@ export const Ul = styled('ul')`
   list-style-type: none;
 `
 
-export const Li = styled('li')`
+const Li = styled('li')`
   cursor: pointer;
   padding: 1rem;
   margin: 1rem 0;
@@ -28,7 +28,7 @@ export const Li = styled('li')`
   }
 `
 
-export const Percentage = styled('div')`
+const Percentage = styled('div')`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
