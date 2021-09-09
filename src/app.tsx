@@ -80,6 +80,7 @@ const App: FunctionComponent = () => {
             .sort(({ size: a }, { size: b }) => b - a),
     [data]
   )
+
   // total size of the assets
   const totalSize = assets.reduce(
     (prev, curr) => prev + sumModules(getModules(data.chunks, curr.chunks)),

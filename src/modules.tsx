@@ -93,11 +93,10 @@ const Modules = ({ chunks, asset }: ModulesProps) => {
           <List
             percentage={getPerc(bigModules[bigModulesIndex])}
             interactive={false}
-            title={bigModules[bigModulesIndex].name}
-          >
-            {format(bigModules[bigModulesIndex].size)} ~
-            {' ' + pretty(bigModules[bigModulesIndex].name)}
-          </List>
+            name={pretty(bigModules[bigModulesIndex].name)}
+            size={format(bigModules[bigModulesIndex].size)}
+            title={pretty(bigModules[bigModulesIndex].name)}
+          />
         ) : (
           smallModules.map((module, i) => {
             return (
@@ -105,10 +104,10 @@ const Modules = ({ chunks, asset }: ModulesProps) => {
                 key={i}
                 percentage={getPerc(module)}
                 interactive={false}
+                name={module.name}
+                size={format(module.size)}
                 title={module.name}
-              >
-                {format(module.size)} ~ {module.name}
-              </List>
+              />
             )
           })
         )}

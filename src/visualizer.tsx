@@ -25,10 +25,10 @@ const Visualizer = ({ assets, chunks, totalSize, select }: VisualizerProps) => (
             key={i}
             percentage={percentage}
             interactive={true}
+            name={asset.name}
+            size={format(size)}
             onClick={() => select(i)}
-          >
-            {asset.name} ~ {format(size)}
-          </List>
+          />
         )
       })}
     </Ul>

@@ -49,12 +49,22 @@ const Percentage = styled('div')`
 interface ListProps {
   percentage: string | number
   interactive: boolean
+  name: string
+  size: string
   [x: string]: any
 }
 
-export const List = ({ percentage, interactive, ...props }: ListProps) => (
+export const List = ({
+  percentage,
+  interactive,
+  name,
+  size,
+  ...props
+}: ListProps) => (
   <Li data-interactive={interactive} {...props}>
-    <p>{props.children}</p>
+    <p>
+      {name} ~ {size}
+    </p>
     <Percentage>
       <div style={{ width: `${percentage}%` }} />
       <span>{percentage}%</span>

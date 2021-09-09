@@ -37,7 +37,9 @@ const Loader = ({ onLoad }: LoaderProps) => {
   const ref = useRef<HTMLInputElement>()
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
-  const [switchedTheme, setSwitchedTheme] = useState(false)
+  const [switchedTheme, setSwitchedTheme] = useState(
+    document.body.style.color === 'white'
+  )
 
   useEffect(() => {
     window.addEventListener('dragenter', handleDragEnter)
@@ -125,12 +127,12 @@ const Loader = ({ onLoad }: LoaderProps) => {
 
     document.body.style.setProperty(
       '--primary',
-      switchedTheme ? '#e7edd6' : 'magenta'
+      switchedTheme ? '#e7edd6' : '#2b4c59'
     )
 
     document.body.style.setProperty(
       '--secondary',
-      switchedTheme ? '#b9a6d1' : 'teal'
+      switchedTheme ? '#b9a6d1' : '#578a68'
     )
   }
 
