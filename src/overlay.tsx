@@ -7,11 +7,11 @@ const Outer = styled('div')`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(185, 166, 209, 0.8);
+  background-color: var(--secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: ${props => (props['data-dragging'] ? 1 : 0)};
+  opacity: ${props => (props['data-dragging'] ? 0.85 : 0)};
   visibility: ${props => (props['data-dragging'] ? 'visible' : 'hidden')};
   transition: opacity 200ms ease-out
     ${props => (!props['data-dragging'] ? ', visibility 0s linear 200ms' : '')};

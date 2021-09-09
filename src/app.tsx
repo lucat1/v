@@ -6,6 +6,7 @@ import { getModules, sumModules } from './calc'
 import Header from './header'
 import Loader from './loader'
 import Modules from './modules'
+import playSound from './playSound'
 import { Asset } from './stats'
 import Visualizer from './visualizer'
 
@@ -91,6 +92,8 @@ const App: FunctionComponent = () => {
   const [selected, setSelected] = useState(-2)
 
   const handleClick = () => {
+    playSound('/back-sound.mp3')
+
     if (selected === -1) {
       setData(null)
       setSelected(-2)

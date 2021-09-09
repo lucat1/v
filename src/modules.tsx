@@ -4,6 +4,7 @@ import { format, getModules, pretty, round, sumModules } from './calc'
 import { Layout, Square } from './layout'
 import { List, Ul } from './list'
 import Main from './main'
+import playSound from './playSound'
 import { Asset, Chunk, Module } from './stats'
 import { Subtitle, Title } from './typography'
 
@@ -52,6 +53,7 @@ const Modules = ({ chunks, asset }: ModulesProps) => {
   }, [modules])
 
   const handleClick = (isBig: boolean, index: number) => {
+    playSound('/button-sound.mp3')
     setShowBig(isBig)
     setBigModulesIndex(index)
   }

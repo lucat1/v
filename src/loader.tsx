@@ -6,6 +6,7 @@ import Lines from './lines'
 import Main from './main'
 import Overlay from './overlay'
 import Panels from './panels'
+import playSound from './playSound'
 import { Stats } from './stats'
 import Toggle from './toggle'
 import ToggleGroup from './toggleGroup'
@@ -50,6 +51,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }, [])
 
   const handleClick = useCallback(() => {
+    playSound('/button-sound.mp3')
     ref.current.click()
   }, [ref])
 
@@ -69,6 +71,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
 
   const handleLatestUpload = e => {
     stop(e)
+    playSound('/button-sound.mp3')
 
     if (localStorage.getItem('previous') == null) {
       setError("You haven't uploaded a file yet")
@@ -79,8 +82,9 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }
 
   const handleExampleUpload = async () => {
-    const blob = await (await fetch('/stats.json')).blob()
+    playSound('/button-sound.mp3')
 
+    const blob = await (await fetch('/stats.json')).blob()
     const file = new File([blob], 'stats.json')
 
     load([file] as any, true)
@@ -121,6 +125,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }
 
   const handleThemeChange = () => {
+    playSound('/toggle-sound.mp3')
     setSwitchedTheme(!switchedTheme)
 
     document.body.style.color = switchedTheme ? 'black' : 'white'
@@ -167,7 +172,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
         <Toggle
           content={['Sounds', 'On', 'Off']}
           checked={false}
-          onChange={() => console.log('sounds')}
+          onChange={() => playSound('/toggle-sound.mp3')}
         />
       </ToggleGroup>
 
