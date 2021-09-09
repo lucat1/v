@@ -21,7 +21,12 @@ const Visualizer = ({ assets, chunks, totalSize, select }: VisualizerProps) => (
         const percentage = ((size / totalSize) * 100).toFixed(1)
 
         return (
-          <List key={i} percentage={percentage} onClick={() => select(i)}>
+          <List
+            key={i}
+            percentage={percentage}
+            interactive={true}
+            onClick={() => select(i)}
+          >
             {asset.name} ~ {format(size)}
           </List>
         )

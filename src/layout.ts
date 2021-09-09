@@ -20,7 +20,7 @@ export const Square = styled('div')`
   opacity: 0;
   transform: scale(0);
   transition: transform 250ms ${props => props['data-delay'] * 150}ms,
-    opacity 500ms ${props => props['data-delay'] * 150}ms, box-shadow 150ms;
+    opacity 450ms ${props => props['data-delay'] * 150}ms, box-shadow 150ms;
 
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px,

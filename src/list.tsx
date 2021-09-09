@@ -9,7 +9,7 @@ export const Ul = styled('ul')`
 `
 
 const Li = styled('li')`
-  cursor: pointer;
+  cursor: ${props => (props['data-interactive'] ? 'pointer' : 'initial')};
   padding: 1rem;
   margin: 1rem 0;
   user-select: none;
@@ -23,8 +23,10 @@ const Li = styled('li')`
   }
 
   &:hover {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px,
-      rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
+    box-shadow: ${props =>
+      props['data-interactive']
+        ? 'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px,rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px'
+        : 'none'};
   }
 `
 
@@ -44,8 +46,14 @@ const Percentage = styled('div')`
   }
 `
 
-export const List = ({ percentage, ...props }) => (
-  <Li {...props}>
+interface ListProps {
+  percentage: string | number
+  interactive: boolean
+  [x: string]: any
+}
+
+export const List = ({ percentage, interactive, ...props }: ListProps) => (
+  <Li data-interactive={interactive} {...props}>
     <p>{props.children}</p>
     <Percentage>
       <div style={{ width: `${percentage}%` }} />

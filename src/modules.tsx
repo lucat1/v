@@ -1,7 +1,8 @@
 import { h } from 'preact'
 import { useMemo, useState } from 'preact/hooks'
-import { format, getModules, round, sumModules } from './calc'
+import { format, getModules, pretty, round, sumModules } from './calc'
 import { Layout, Square } from './layout'
+import { List, Ul } from './list'
 import Main from './main'
 import { Asset, Chunk, Module } from './stats'
 import { Subtitle, Title } from './typography'
@@ -30,8 +31,8 @@ const Modules = ({ chunks, asset }: ModulesProps) => {
 
   const totalSize = useMemo<number>(() => sumModules(modules), [modules])
 
-  const [big, setBig] = useState(null)
-  const [id, setId] = useState(0)
+  const [showBig, setShowBig] = useState(null)
+  const [bigModulesIndex, setBigModulesIndex] = useState(0)
 
   const getPerc = (m: Module): number => round((m.size / totalSize) * 100)
 
@@ -50,65 +51,24 @@ const Modules = ({ chunks, asset }: ModulesProps) => {
     ]
   }, [modules])
 
+  const handleClick = (isBig: boolean, index: number) => {
+    setShowBig(isBig)
+    setBigModulesIndex(index)
+  }
+
   return (
     <Main>
       <Title style={{ wordBreak: 'break-word' }}>
         {asset.name} ~ {format(totalSize)}
       </Title>
       <Subtitle>Click on the rectangles to see each dependency</Subtitle>
-      {/* <Square>
-        // Render big modules (more than 10%)
-        {bigModules.map((module, i) => (
-          <Box
-            key={i}
-            data-size={getPerc(module)}
-            title={module.name}
-            delay={i}
-            onClick={() => {
-              setBig(true)
-              setId(i)
-            }}
-          >
-            {format(module.size)}
-          </Box>
-        ))}
-
-				// Render small modules (less than 10%)
-        {smallModules.length > 0 && (
-          <Box
-            data-size={10}
-            delay={bigModules.length}
-            onClick={() => setBig(false)}
-          >
-            ...
-          </Box>
-        )}
-      </Square>
-			
-      <Ul>
-        {big === null ? null : big === true ? (
-          <List
-            percentage={getPerc(bigModules[id])}
-            title={bigModules[id].name}
-          >
-            {format(bigModules[id].size)} => {pretty(bigModules[id].name)}
-          </List>
-        ) : (
-          smallModules.map((module, i) => {
-            return (
-              <List key={i} percentage={getPerc(module)} title={module.name}>
-                {format(module.size)} => {module.name}
-              </List>
-            )
-          })
-        )}
-      </Ul> */}
       <Layout>
         {bigModules.map((module, i) => (
           <Square
             key={i}
             title={module.name}
             data-delay={i}
+            onClick={() => handleClick(true, i)}
             style={{
               gridColumn: `span ${getSpan(module)}`,
               gridRow: `span ${getSpan(module)}`
@@ -119,10 +79,40 @@ const Modules = ({ chunks, asset }: ModulesProps) => {
         ))}
 
         {smallModules.length > 0 && (
-          <Square data-delay={bigModules.length}>...</Square>
+          <Square
+            data-delay={bigModules.length}
+            onClick={() => handleClick(false, -1)}
+          >
+            ...
+          </Square>
         )}
       </Layout>
-      <h1>Lorem</h1>
+
+      <Ul style={{ marginTop: '1rem' }}>
+        {showBig === null ? null : showBig === true ? (
+          <List
+            percentage={getPerc(bigModules[bigModulesIndex])}
+            interactive={false}
+            title={bigModules[bigModulesIndex].name}
+          >
+            {format(bigModules[bigModulesIndex].size)} ~
+            {' ' + pretty(bigModules[bigModulesIndex].name)}
+          </List>
+        ) : (
+          smallModules.map((module, i) => {
+            return (
+              <List
+                key={i}
+                percentage={getPerc(module)}
+                interactive={false}
+                title={module.name}
+              >
+                {format(module.size)} ~ {module.name}
+              </List>
+            )
+          })
+        )}
+      </Ul>
     </Main>
   )
 }
