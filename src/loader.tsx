@@ -61,10 +61,9 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }, [])
 
   const handleClick = useCallback(() => {
-    console.log('yo')
-    useSound()
+    useSound(noisy)
     ref.current.click()
-  }, [ref])
+  }, [ref, noisy])
 
   const handleSubmit = useCallback(() => {
     load(ref.current.files)
@@ -80,9 +79,9 @@ const Loader = ({ onLoad }: LoaderProps) => {
     setDragging(false)
   }
 
-  const handleLatestUpload = e => {
+  const handleLatestUpload = useCallback(e => {
     stop(e)
-    useSound()
+    useSound(noisy)
 
     if (localStorage.getItem('previous') == null) {
       setError("You haven't uploaded a file yet")
@@ -90,10 +89,10 @@ const Loader = ({ onLoad }: LoaderProps) => {
     }
 
     if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
-  }
+  }, [noisy])
 
-  const handleExampleUpload = async () => {
-    useSound()
+  const handleExampleUpload = useCallback(async () => {
+    useSound(noisy)
 
     setError('Loading example...')
     if (jsonExample == null) {
@@ -102,7 +101,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
     }
 
     load([jsonExample] as any, true)
-  }
+  }, [noisy])
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     stop(e)
@@ -138,8 +137,8 @@ const Loader = ({ onLoad }: LoaderProps) => {
     }
   }
 
-  const handleThemeChange = () => {
-    useSound('toggle')
+  const handleThemeChange = useCallback(() => {
+    useSound(noisy, 'toggle')
     setSwitchedTheme(!switchedTheme)
 
     document.body.style.color = switchedTheme ? 'black' : 'white'
@@ -153,16 +152,12 @@ const Loader = ({ onLoad }: LoaderProps) => {
       '--secondary',
       switchedTheme ? '#b9a6d1' : '#578a68'
     )
-  }
+  }, [noisy])
 
   const handleSoundChange = useCallback(() => {
-    // noisy = false => toggled to true and sound played
-    // nosiy = true => toggled to false
-    console.log("noisy:", noisy)
-    // setNoisy(!noisy)
-    // if(!noisy)
-    //   useSound()
-  }, [])
+    setNoisy(!noisy)
+    useSound(!noisy)
+  }, [noisy])
 
   return (
     <Main>

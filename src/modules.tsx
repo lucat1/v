@@ -1,10 +1,11 @@
 import { h } from 'preact'
-import { useMemo, useState } from 'preact/hooks'
+import { useMemo, useState, useCallback, useContext } from 'preact/hooks'
 import { format, getModules, pretty, round, sumModules } from './calc'
 import { Layout, Square } from './layout'
 import { List, Ul } from './list'
 import Main from './main'
 import useSound from './useSound'
+import { SoundContext } from './app'
 import { Asset, Chunk, Module } from './stats'
 import { Subtitle, Title } from './typography'
 
@@ -25,6 +26,7 @@ interface ModulesProps {
 }
 
 const Modules = ({ chunks, asset }: ModulesProps) => {
+  const [noisy] = useContext(SoundContext)
   const modules = useMemo<Module[]>(() => getModules(chunks, asset.chunks), [
     chunks,
     asset.chunks
@@ -52,11 +54,11 @@ const Modules = ({ chunks, asset }: ModulesProps) => {
     ]
   }, [modules])
 
-  const handleClick = (isBig: boolean, index: number) => {
-    useSound()
+  const handleClick = useCallback((isBig: boolean, index: number) => {
+    useSound(noisy)
     setShowBig(isBig)
     setBigModulesIndex(index)
-  }
+  }, [noisy])
 
   return (
     <Main>

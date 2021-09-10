@@ -63,8 +63,8 @@ const App: FunctionComponent = () => {
   // currently selected asset view
   const [selected, setSelected] = useState(-2)
 
-  const handleClick = () => {
-    useSound('back')
+  const handleClick = useCallback(() => {
+    useSound(noisy, 'back')
 
     if (selected === -1) {
       setData(null)
@@ -72,7 +72,7 @@ const App: FunctionComponent = () => {
     } else {
       setSelected(-1)
     }
-  }
+  }, [noisy, selected])
 
   return (
     <SoundContext.Provider value={[noisy, setNoisy]}>
