@@ -1,7 +1,7 @@
 import { useContext } from 'preact/hooks'
 import { SoundContext } from './app'
 
-const cache: { [key: string]: Audio } = {}
+const cache: { [key: string]: HTMLAudioElement } = {}
 
 const useSound = (typ?: string, currentlySwitching?: boolean) => {
   const [noisy] = useContext(SoundContext)
