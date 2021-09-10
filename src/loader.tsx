@@ -19,6 +19,8 @@ import Toggle from './toggle'
 import ToggleGroup from './toggleGroup'
 import { HomeTitle } from './typography'
 
+let jsonExample: File = null
+
 const Container = styled('div')`
   width: 100%;
   height: 50vh;
@@ -93,10 +95,12 @@ const Loader = ({ onLoad }: LoaderProps) => {
     playSound()
 
     setError('Loading example...')
-    const blob = await (await fetch('/stats.json')).blob()
-    const file = new File([blob], 'stats.json')
+    if (jsonExample == null) {
+      const blob = await (await fetch('/stats.json')).blob()
+      jsonExample = new File([blob], 'stats.json')
+    }
 
-    load([file] as any, true)
+    load([jsonExample] as any, true)
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
