@@ -1,23 +1,17 @@
 import { useContext } from 'preact/hooks'
 import { SoundContext } from './app'
-// @ts-ignore
-import backSound from '/back-sound.mp3'
-// @ts-ignore
-import buttonSound from '/button-sound.mp3'
-// @ts-ignore
-import toggleSound from '/toggle-sound.mp3'
 
-const playSound = (type?: string, currentlySwitching?: boolean) => {
+const cache: { [key: string]: Audio } = {}
+
+const useSound = (typ?: string, currentlySwitching?: boolean) => {
   const [noisy] = useContext(SoundContext)
-
   if (!noisy && !currentlySwitching) return
 
-  const src: string =
-    type === 'back' ? backSound : type === 'toggle' ? toggleSound : buttonSound
+  if (!typ) typ = 'button'
+  if (cache[typ] == null) cache[typ] = new Audio(typ + '-sound.mp3')
 
-  const audio = new Audio(src)
-  audio.volume = 0.5
-  audio.play()
+  cache[typ].volume = 0.5
+  cache[typ].play()
 }
 
-export default playSound
+export default useSound
