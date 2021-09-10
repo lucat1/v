@@ -1,6 +1,6 @@
 import { styled } from 'goober'
 import { h } from 'preact'
-import { MouseEventHandler } from 'react'
+// import { MouseEventHandler } from 'react'
 import { ErrorText } from './typography'
 
 const Holder = styled('div')`
@@ -128,11 +128,11 @@ const Panels = ({
 }: IProps) => (
   <Holder>
     <Square>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
     </Square>
     <Buttons>
       <Button onClick={onUpload}>Upload a JSON file</Button>

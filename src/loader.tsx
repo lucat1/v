@@ -61,6 +61,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }, [])
 
   const handleClick = useCallback(() => {
+    console.log('yo')
     useSound()
     ref.current.click()
   }, [ref])
@@ -154,10 +155,14 @@ const Loader = ({ onLoad }: LoaderProps) => {
     )
   }
 
-  const handleSoundChange = () => {
-    if (!noisy) useSound('toggle', true)
-    setNoisy(!noisy)
-  }
+  const handleSoundChange = useCallback(() => {
+    // noisy = false => toggled to true and sound played
+    // nosiy = true => toggled to false
+    console.log("noisy:", noisy)
+    // setNoisy(!noisy)
+    // if(!noisy)
+    //   useSound()
+  }, [])
 
   return (
     <Main>
