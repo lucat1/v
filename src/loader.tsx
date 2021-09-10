@@ -59,7 +59,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }, [])
 
   const handleClick = useCallback(() => {
-    playSound('/button-sound.mp3')
+    playSound()
     ref.current.click()
   }, [ref])
 
@@ -79,7 +79,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
 
   const handleLatestUpload = e => {
     stop(e)
-    playSound('/button-sound.mp3')
+    playSound()
 
     if (localStorage.getItem('previous') == null) {
       setError("You haven't uploaded a file yet")
@@ -90,7 +90,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }
 
   const handleExampleUpload = async () => {
-    playSound('/button-sound.mp3')
+    playSound()
 
     const blob = await (await fetch('/stats.json')).blob()
     const file = new File([blob], 'stats.json')
@@ -133,7 +133,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }
 
   const handleThemeChange = () => {
-    playSound('/toggle-sound.mp3')
+    playSound('toggle')
     setSwitchedTheme(!switchedTheme)
 
     document.body.style.color = switchedTheme ? 'black' : 'white'
@@ -150,7 +150,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }
 
   const handleSoundChange = () => {
-    if (!noisy) playSound('/toggle-sound.mp3', true)
+    if (!noisy) playSound('toggle', true)
     setNoisy(!noisy)
   }
 

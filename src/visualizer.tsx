@@ -29,7 +29,7 @@ const Visualizer = ({ assets, chunks, totalSize, select }: VisualizerProps) => (
             name={asset.name}
             size={format(size)}
             onClick={() => {
-              playSound('/button-sound.mp3')
+              playSound()
               select(i)
             }}
           />

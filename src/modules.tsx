@@ -53,7 +53,7 @@ const Modules = ({ chunks, asset }: ModulesProps) => {
   }, [modules])
 
   const handleClick = (isBig: boolean, index: number) => {
-    playSound('/button-sound.mp3')
+    playSound()
     setShowBig(isBig)
     setBigModulesIndex(index)
   }

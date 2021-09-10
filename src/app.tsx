@@ -64,7 +64,7 @@ const App: FunctionComponent = () => {
   const [selected, setSelected] = useState(-2)
 
   const handleClick = () => {
-    playSound('/back-sound.mp3')
+    playSound('back')
 
     if (selected === -1) {
       setData(null)
