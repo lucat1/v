@@ -1,6 +1,6 @@
-import { CSSTransition, TransitionGroup } from '@bmp/preact-transition-group'
+import { CSSTransition } from '@bmp/preact-transition-group'
 import { styled } from 'goober'
-import { FunctionComponent, h } from 'preact'
+import { createContext, FunctionComponent, h } from 'preact'
 import { useCallback, useMemo, useState } from 'preact/hooks'
 import { getModules, sumModules } from './calc'
 import Header from './header'
@@ -8,41 +8,8 @@ import Loader from './loader'
 import Modules from './modules'
 import playSound from './playSound'
 import { Asset } from './stats'
+import TransitionContainer from './transitionContainer'
 import Visualizer from './visualizer'
-
-const TransitionContainer = styled(TransitionGroup)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 5rem;
-  overflow: hidden;
-
-  .view-enter {
-    transform: ${(props: { selected: number }) =>
-      props.selected >= 0 ? 'translateX(-100%)' : 'translateX(100%)'};
-  }
-
-  .view-enter-active {
-    transform: translateX(0%);
-    transition: transform 300ms ease-in-out;
-  }
-
-  .view-exit {
-    transform: translateX(0%);
-  }
-
-  .view-exit-active {
-    transform: ${(props: { selected: number }) =>
-      props.selected >= 0 ? 'translateX(100%)' : 'translateX(-100%)'};
-    transition: transform 300ms ease-in-out;
-  }
-
-  .view-enter-done div[data-delay] {
-    opacity: 1;
-    transform: scale(1);
-  }
-`
 
 const Wrapper = styled('div')`
   width: 100vw;
@@ -59,8 +26,13 @@ const Container = styled('div')`
   overflow-y: auto;
 `
 
+export const SoundContext = createContext(null)
+
 const App: FunctionComponent = () => {
+  const [noisy, setNoisy] = useState(true)
+
   const [data, setData] = useState(null)
+
   const handleLoad = useCallback((data: Object) => {
     setData(data)
     setSelected(-1)
@@ -103,33 +75,35 @@ const App: FunctionComponent = () => {
   }
 
   return (
-    <Wrapper>
-      <Header onIconClick={handleClick} selected={selected} />
-      <TransitionContainer selected={selected}>
-        <CSSTransition
-          key={data ? selected : -2}
-          timeout={300}
-          classNames='view'
-        >
-          <Container>
-            {data ? (
-              selected === -1 ? (
-                <Visualizer
-                  select={setSelected}
-                  assets={assets}
-                  chunks={data.chunks}
-                  totalSize={totalSize}
-                />
+    <SoundContext.Provider value={[noisy, setNoisy]}>
+      <Wrapper>
+        <Header onIconClick={handleClick} selected={selected} />
+        <TransitionContainer selected={selected}>
+          <CSSTransition
+            key={data ? selected : -2}
+            timeout={300}
+            classNames='view'
+          >
+            <Container>
+              {data ? (
+                selected === -1 ? (
+                  <Visualizer
+                    select={setSelected}
+                    assets={assets}
+                    chunks={data.chunks}
+                    totalSize={totalSize}
+                  />
+                ) : (
+                  <Modules asset={assets[selected]} chunks={data.chunks} />
+                )
               ) : (
-                <Modules asset={assets[selected]} chunks={data.chunks} />
-              )
-            ) : (
-              <Loader onLoad={handleLoad} />
-            )}
-          </Container>
-        </CSSTransition>
-      </TransitionContainer>
-    </Wrapper>
+                <Loader onLoad={handleLoad} />
+              )}
+            </Container>
+          </CSSTransition>
+        </TransitionContainer>
+      </Wrapper>
+    </SoundContext.Provider>
   )
 }
 

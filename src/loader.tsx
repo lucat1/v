@@ -1,7 +1,14 @@
 import { styled } from 'goober'
 import { h } from 'preact'
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks'
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'preact/hooks'
 import { text } from 'promisify-file-reader'
+import { SoundContext } from './app'
 import Lines from './lines'
 import Main from './main'
 import Overlay from './overlay'
@@ -36,6 +43,7 @@ interface LoaderProps {
 
 const Loader = ({ onLoad }: LoaderProps) => {
   const ref = useRef<HTMLInputElement>()
+  const [noisy, setNoisy] = useContext(SoundContext)
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
   const [switchedTheme, setSwitchedTheme] = useState(
@@ -141,6 +149,11 @@ const Loader = ({ onLoad }: LoaderProps) => {
     )
   }
 
+  const handleSoundChange = () => {
+    if (!noisy) playSound('/toggle-sound.mp3', true)
+    setNoisy(!noisy)
+  }
+
   return (
     <Main>
       <HomeTitle>Drop a JSON file to visualize it.</HomeTitle>
@@ -171,8 +184,8 @@ const Loader = ({ onLoad }: LoaderProps) => {
 
         <Toggle
           content={['Sounds', 'On', 'Off']}
-          checked={false}
-          onChange={() => playSound('/toggle-sound.mp3')}
+          checked={!noisy}
+          onChange={handleSoundChange}
         />
       </ToggleGroup>
 
