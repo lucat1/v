@@ -13,7 +13,7 @@ import Lines from './lines'
 import Main from './main'
 import Overlay from './overlay'
 import Panels from './panels'
-import playSound from './playSound'
+import useSound from './useSound'
 import { Stats } from './stats'
 import Toggle from './toggle'
 import ToggleGroup from './toggleGroup'
@@ -61,7 +61,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }, [])
 
   const handleClick = useCallback(() => {
-    playSound()
+    useSound()
     ref.current.click()
   }, [ref])
 
@@ -81,7 +81,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
 
   const handleLatestUpload = e => {
     stop(e)
-    playSound()
+    useSound()
 
     if (localStorage.getItem('previous') == null) {
       setError("You haven't uploaded a file yet")
@@ -92,7 +92,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }
 
   const handleExampleUpload = async () => {
-    playSound()
+    useSound()
 
     setError('Loading example...')
     if (jsonExample == null) {
@@ -138,7 +138,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }
 
   const handleThemeChange = () => {
-    playSound('toggle')
+    useSound('toggle')
     setSwitchedTheme(!switchedTheme)
 
     document.body.style.color = switchedTheme ? 'black' : 'white'
@@ -155,7 +155,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   }
 
   const handleSoundChange = () => {
-    if (!noisy) playSound('toggle', true)
+    if (!noisy) useSound('toggle', true)
     setNoisy(!noisy)
   }
 

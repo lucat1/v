@@ -2,7 +2,7 @@ import { h } from 'preact'
 import { format, getModules, sumModules } from './calc'
 import { List, Ul } from './list'
 import Main from './main'
-import playSound from './playSound'
+import useSound from './useSound'
 import { Asset, Chunk } from './stats'
 import { Title } from './typography'
 
@@ -29,7 +29,7 @@ const Visualizer = ({ assets, chunks, totalSize, select }: VisualizerProps) => (
             name={asset.name}
             size={format(size)}
             onClick={() => {
-              playSound()
+              useSound()
               select(i)
             }}
           />

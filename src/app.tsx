@@ -6,7 +6,7 @@ import { getModules, sumModules } from './calc'
 import Header from './header'
 import Loader from './loader'
 import Modules from './modules'
-import playSound from './playSound'
+import useSound from './useSound'
 import { Asset } from './stats'
 import TransitionContainer from './transitionContainer'
 import Visualizer from './visualizer'
@@ -64,7 +64,7 @@ const App: FunctionComponent = () => {
   const [selected, setSelected] = useState(-2)
 
   const handleClick = () => {
-    playSound('back')
+    useSound('back')
 
     if (selected === -1) {
       setData(null)
