@@ -92,6 +92,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
   const handleExampleUpload = async () => {
     playSound()
 
+    setError('Loading example...')
     const blob = await (await fetch('/stats.json')).blob()
     const file = new File([blob], 'stats.json')
 
