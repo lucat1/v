@@ -6,9 +6,9 @@ import { getModules, sumModules } from './calc'
 import Header from './header'
 import Loader from './loader'
 import Modules from './modules'
-import useSound from './useSound'
 import { Asset } from './stats'
 import TransitionContainer from './transitionContainer'
+import useSound from './useSound'
 import Visualizer from './visualizer'
 
 const Wrapper = styled('div')`

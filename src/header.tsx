@@ -5,7 +5,7 @@ const Nav = styled('header')`
   display: flex;
   justify-content: left;
   align-items: center;
-  width: 85%;
+  width: 75%;
   height: 5rem;
   margin: 0 auto;
   user-select: none;

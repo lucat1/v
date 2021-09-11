@@ -1,7 +1,7 @@
 import { styled } from 'goober'
 
 export default styled('main')`
-  width: 85%;
+  width: 75%;
   min-height: calc(100vh - 5rem);
   display: flex;
   flex-direction: column;

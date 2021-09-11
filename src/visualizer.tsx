@@ -1,12 +1,12 @@
 import { h } from 'preact'
 import { useCallback, useContext } from 'preact/hooks'
+import { SoundContext } from './app'
 import { format, getModules, sumModules } from './calc'
 import { List, Ul } from './list'
 import Main from './main'
-import useSound from './useSound'
-import { SoundContext } from './app'
 import { Asset, Chunk } from './stats'
 import { Title } from './typography'
+import useSound from './useSound'
 
 interface VisualizerProps {
   assets: Asset[]
@@ -17,10 +17,14 @@ interface VisualizerProps {
 
 const Visualizer = ({ assets, chunks, totalSize, select }: VisualizerProps) => {
   const [noisy] = useContext(SoundContext)
-  const clickHandler = useCallback((i: Number) => {
-    useSound(noisy)
-    select(i)
-  }, [noisy])
+
+  const handleClick = useCallback(
+    (i: number) => {
+      useSound(noisy)
+      select(i)
+    },
+    [noisy]
+  )
 
   return (
     <Main>
@@ -37,7 +41,7 @@ const Visualizer = ({ assets, chunks, totalSize, select }: VisualizerProps) => {
               interactive={true}
               name={asset.name}
               size={format(size)}
-              onClick={_ => clickHandler(i)}
+              onClick={() => handleClick(i)}
             />
           )
         })}

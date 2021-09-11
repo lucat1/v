@@ -63,7 +63,7 @@ const Button = styled('button')`
 interface IProps {
   content: string[]
   checked: boolean
-  onChange: React.MouseEventHandler<HTMLButtonElement>
+  onChange: any
 }
 
 const Toggle = ({ content, checked, onChange }: IProps) => (

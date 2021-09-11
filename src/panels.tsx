@@ -1,6 +1,5 @@
 import { styled } from 'goober'
 import { h } from 'preact'
-// import { MouseEventHandler } from 'react'
 import { ErrorText } from './typography'
 
 const Holder = styled('div')`
@@ -113,19 +112,7 @@ const Button = styled('button')`
   }
 `
 
-interface IProps {
-  onUpload: MouseEventHandler<HTMLButtonElement>
-  onLatestUpload: MouseEventHandler<HTMLButtonElement>
-  onExampleUpload: MouseEventHandler<HTMLButtonElement>
-  errorText: string
-}
-
-const Panels = ({
-  onUpload,
-  onLatestUpload,
-  onExampleUpload,
-  errorText
-}: IProps) => (
+const Panels = ({ onUpload, onLatestUpload, onExampleUpload, errorText }) => (
   <Holder>
     <Square>
       <div />

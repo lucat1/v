@@ -13,11 +13,11 @@ import Lines from './lines'
 import Main from './main'
 import Overlay from './overlay'
 import Panels from './panels'
-import useSound from './useSound'
 import { Stats } from './stats'
 import Toggle from './toggle'
 import ToggleGroup from './toggleGroup'
 import { HomeTitle } from './typography'
+import useSound from './useSound'
 
 let jsonExample: File = null
 
@@ -34,7 +34,7 @@ const Container = styled('div')`
   cursor: pointer;
 `
 
-const stop = (e: React.DragEvent<HTMLDivElement>) => {
+const stop = e => {
   e.preventDefault()
   e.stopPropagation()
 }
@@ -79,17 +79,20 @@ const Loader = ({ onLoad }: LoaderProps) => {
     setDragging(false)
   }
 
-  const handleLatestUpload = useCallback(e => {
-    stop(e)
-    useSound(noisy)
+  const handleLatestUpload = useCallback(
+    e => {
+      stop(e)
+      useSound(noisy)
 
-    if (localStorage.getItem('previous') == null) {
-      setError("You haven't uploaded a file yet")
-      return
-    }
+      if (localStorage.getItem('previous') == null) {
+        setError("You haven't uploaded a file yet")
+        return
+      }
 
-    if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
-  }, [noisy])
+      if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
+    },
+    [noisy]
+  )
 
   const handleExampleUpload = useCallback(async () => {
     useSound(noisy)
@@ -103,7 +106,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
     load([jsonExample] as any, true)
   }, [noisy])
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = e => {
     stop(e)
     setDragging(false)
     load(e.dataTransfer.files)
@@ -137,7 +140,7 @@ const Loader = ({ onLoad }: LoaderProps) => {
     }
   }
 
-  const handleThemeChange = useCallback(() => {
+  const handleThemeChange = () => {
     useSound(noisy, 'toggle')
     setSwitchedTheme(!switchedTheme)
 
@@ -152,11 +155,11 @@ const Loader = ({ onLoad }: LoaderProps) => {
       '--secondary',
       switchedTheme ? '#b9a6d1' : '#578a68'
     )
-  }, [noisy])
+  }
 
   const handleSoundChange = useCallback(() => {
     setNoisy(!noisy)
-    useSound(!noisy)
+    useSound(!noisy, 'toggle')
   }, [noisy])
 
   return (
