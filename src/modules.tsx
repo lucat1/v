@@ -1,92 +1,122 @@
-import { h, FunctionComponent } from 'preact'
-import { useMemo, useState } from 'preact/hooks'
+import { h } from 'preact'
+import { useMemo, useState, useCallback, useContext } from 'preact/hooks'
+import { format, getModules, pretty, round, sumModules } from './calc'
+import { Layout, Square } from './layout'
+import { List, Ul } from './list'
+import Main from './main'
+import useSound from './useSound'
+import { SoundContext } from './app'
+import { Asset, Chunk, Module } from './stats'
+import { Subtitle, Title } from './typography'
 
-import Body from './body'
-import { Chunk, Asset, Module } from './stats'
-import { format, getModules, sumModules, pretty, round } from './calc'
-import { Title, Subtitle } from './typography'
-import { Square, Box } from './square'
-import { Ul, List } from './list'
+const shuffle = (arr: Module[]): Module[] => {
+  const newArr = arr
+
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[newArr[i], newArr[j]] = [newArr[j], newArr[i]]
+  }
+
+  return newArr
+}
 
 interface ModulesProps {
   chunks: Chunk[]
   asset: Asset
 }
 
-const Modules: FunctionComponent<ModulesProps> = ({ chunks, asset }) => {
+const Modules = ({ chunks, asset }: ModulesProps) => {
+  const [noisy] = useContext(SoundContext)
   const modules = useMemo<Module[]>(() => getModules(chunks, asset.chunks), [
     chunks,
     asset.chunks
   ])
+
   const totalSize = useMemo<number>(() => sumModules(modules), [modules])
 
-  const [big, setBig] = useState(null)
-  const [id, setId] = useState(0)
+  const [showBig, setShowBig] = useState(null)
+  const [bigModulesIndex, setBigModulesIndex] = useState(0)
 
   const getPerc = (m: Module): number => round((m.size / totalSize) * 100)
 
+  const getSpan = (m: Module): number => {
+    const percentage = getPerc(m).toString()
+
+    return Number(percentage[0])
+  }
+
   const [bigModules, smallModules] = useMemo<[Module[], Module[]]>(() => {
-    const sorted = modules.sort((a, b) => b.size - a.size)
+    const shuffledArr = shuffle(modules)
 
     return [
-      sorted.filter(module => getPerc(module) > 10),
-      sorted.filter(module => getPerc(module) <= 10)
+      shuffledArr.filter(module => getPerc(module) > 10),
+      shuffledArr.filter(module => getPerc(module) <= 10)
     ]
   }, [modules])
 
+  const handleClick = useCallback((isBig: boolean, index: number) => {
+    useSound(noisy)
+    setShowBig(isBig)
+    setBigModulesIndex(index)
+  }, [noisy])
+
   return (
-    <Body style={{ justifyContent: 'unset', alignItems: 'center' }}>
-      <Title>
+    <Main>
+      <Title style={{ wordBreak: 'break-word' }}>
         {asset.name} ~ {format(totalSize)}
       </Title>
       <Subtitle>Click on the rectangles to see each dependency</Subtitle>
-      <Square>
-        {/* Render big modules (more than 10%) */}
+      <Layout>
         {bigModules.map((module, i) => (
-          <Box
+          <Square
             key={i}
-            data-size={getPerc(module)}
             title={module.name}
-            delay={i}
-            onClick={() => {
-              setBig(true)
-              setId(i)
+            data-delay={i}
+            onClick={() => handleClick(true, i)}
+            style={{
+              gridColumn: `span ${getSpan(module)}`,
+              gridRow: `span ${getSpan(module)}`
             }}
           >
             {format(module.size)}
-          </Box>
+          </Square>
         ))}
 
-        {/* Render small modules (less than 10%) */}
         {smallModules.length > 0 && (
-          <Box
-            data-size={10}
-            delay={bigModules.length}
-            onClick={() => setBig(false)}
+          <Square
+            data-delay={bigModules.length}
+            onClick={() => handleClick(false, -1)}
           >
             ...
-          </Box>
+          </Square>
         )}
-      </Square>
-      <Ul>
-        {big === null ? null : big === true ? (
+      </Layout>
+
+      <Ul style={{ marginTop: '1rem' }}>
+        {showBig === null ? null : showBig === true ? (
           <List
-            percentage={getPerc(bigModules[id])}
-            title={bigModules[id].name}
-          >
-            {format(bigModules[id].size)} => {pretty(bigModules[id].name)}
-          </List>
+            percentage={getPerc(bigModules[bigModulesIndex])}
+            interactive={false}
+            name={pretty(bigModules[bigModulesIndex].name)}
+            size={format(bigModules[bigModulesIndex].size)}
+            title={pretty(bigModules[bigModulesIndex].name)}
+          />
         ) : (
           smallModules.map((module, i) => {
             return (
-              <List key={i} percentage={getPerc(module)} title={module.name}>
-                {format(module.size)} => {module.name}
-              </List>
+              <List
+                key={i}
+                percentage={getPerc(module)}
+                interactive={false}
+                name={module.name}
+                size={format(module.size)}
+                title={module.name}
+              />
             )
           })
         )}
       </Ul>
-    </Body>
+    </Main>
   )
 }
 

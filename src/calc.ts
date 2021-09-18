@@ -1,4 +1,4 @@
-import { Stats, Chunk, Module } from './stats'
+import { Chunk, Module } from './stats'
 
 export const size = (chunks: Chunk[], req: number[]): number => {
   return req.reduce((prev, curr) => {

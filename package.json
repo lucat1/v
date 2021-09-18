@@ -3,27 +3,24 @@
   "version": "0.0.0",
   "description": "A webpack stats visualizer",
   "scripts": {
-    "prepare": "snowpack install",
     "dev": "snowpack dev",
-    "prettify": "prettier --write src/**/**/*.{ts,tsx,json}",
-    "build": "snowpack build"
+    "build": "snowpack build",
+    "prettify": "prettier --write src/**/**/*.{ts,tsx,json}"
   },
-  "author": "LucaT <fromzeroluke1@gmail.com",
+  "author": "Luca Tagliavini <luca.tagliavini5@studio.unibo.it>, Gejsi Vjerdha <gejsi.vjerdha@studio.unibo.it>",
   "license": "MIT",
-  "devDependencies": {
-    "@snowpack/app-scripts-preact": "^0.8.0",
-    "@types/react": "^16.9.34",
-    "husky": "^4.2.5",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
-    "snowpack": "^2.0.0-rc.9",
-    "typescript": "^3.8.3"
-  },
   "dependencies": {
-    "@bmp/preact-transition-group": "0.0.1",
-    "goober": "lucat1/goober#3f120e5c0d97423fb4b0bf68893d764a11ce05ae",
-    "preact": "^10.4.1",
-    "promisify-file-reader": "^4.0.0"
+    "@bmp/preact-transition-group": "^0.0.1",
+    "goober": "^2.0.41",
+    "preact": "^10.5.13",
+    "promisify-file-reader": "^4.1.0"
+  },
+  "devDependencies": {
+    "@prefresh/snowpack": "^3.0.0",
+    "husky": "^7.0.2",
+    "prettier": "^2.4.0",
+    "pretty-quick": "^3.1.1",
+    "snowpack": "^3.0.1"
   },
   "prettier": {
     "printWidth": 80,

@@ -1,52 +1,20 @@
-import { h, Fragment, FunctionComponent } from 'preact'
-import { useCallback, useState, useMemo } from 'preact/hooks'
+import { CSSTransition } from '@bmp/preact-transition-group'
 import { styled } from 'goober'
-import { TransitionGroup, CSSTransition } from '@bmp/preact-transition-group'
-
+import { createContext, FunctionComponent, h } from 'preact'
+import { useCallback, useMemo, useState } from 'preact/hooks'
+import { getModules, sumModules } from './calc'
 import Header from './header'
 import Loader from './loader'
-import Visualizer from './visualizer'
-import { Asset } from './stats'
 import Modules from './modules'
-import { getModules, sumModules } from './calc'
+import { Asset } from './stats'
+import TransitionContainer from './transitionContainer'
+import useSound from './useSound'
+import Visualizer from './visualizer'
 
-const TransitionContainer = styled(TransitionGroup)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 4rem;
-  overflow: hidden;
-
-  .view-enter {
-    transform: ${(props: { selected: number }) =>
-      props.selected >= 0 ? 'translateX(-100%)' : 'translateX(100%)'};
-  }
-
-  .view-enter-active {
-    transform: translateX(0%);
-    transition: transform 300ms ease-in-out;
-  }
-
-  .view-exit {
-    transform: translateX(0%);
-  }
-
-  .view-exit-active {
-    transform: ${(props: { selected: number }) =>
-      props.selected >= 0 ? 'translateX(100%)' : 'translateX(-100%)'};
-    transition: transform 300ms ease-in-out;
-  }
-
-  .view-enter-done div[data-size] {
-    transform: scale(1);
-
-    &:hover {
-      &::before {
-        transform: translateY(0);
-      }
-    }
-  }
+const Wrapper = styled('div')`
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--primary);
 `
 
 const Container = styled('div')`
@@ -58,8 +26,13 @@ const Container = styled('div')`
   overflow-y: auto;
 `
 
+export const SoundContext = createContext(null)
+
 const App: FunctionComponent = () => {
+  const [noisy, setNoisy] = useState(true)
+
   const [data, setData] = useState(null)
+
   const handleLoad = useCallback((data: Object) => {
     setData(data)
     setSelected(-1)
@@ -80,6 +53,7 @@ const App: FunctionComponent = () => {
             .sort(({ size: a }, { size: b }) => b - a),
     [data]
   )
+
   // total size of the assets
   const totalSize = assets.reduce(
     (prev, curr) => prev + sumModules(getModules(data.chunks, curr.chunks)),
@@ -89,43 +63,47 @@ const App: FunctionComponent = () => {
   // currently selected asset view
   const [selected, setSelected] = useState(-2)
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
+    useSound(noisy, 'back')
+
     if (selected === -1) {
       setData(null)
       setSelected(-2)
     } else {
       setSelected(-1)
     }
-  }
+  }, [noisy, selected])
 
   return (
-    <Fragment>
-      <Header onIconClick={handleClick} selected={selected} />
-      <TransitionContainer selected={selected}>
-        <CSSTransition
-          key={data ? selected : -2}
-          timeout={300}
-          classNames='view'
-        >
-          <Container>
-            {data ? (
-              selected === -1 ? (
-                <Visualizer
-                  select={setSelected}
-                  assets={assets}
-                  chunks={data.chunks}
-                  totalSize={totalSize}
-                />
+    <SoundContext.Provider value={[noisy, setNoisy]}>
+      <Wrapper>
+        <Header onIconClick={handleClick} selected={selected} />
+        <TransitionContainer selected={selected}>
+          <CSSTransition
+            key={data ? selected : -2}
+            timeout={300}
+            classNames='view'
+          >
+            <Container>
+              {data ? (
+                selected === -1 ? (
+                  <Visualizer
+                    select={setSelected}
+                    assets={assets}
+                    chunks={data.chunks}
+                    totalSize={totalSize}
+                  />
+                ) : (
+                  <Modules asset={assets[selected]} chunks={data.chunks} />
+                )
               ) : (
-                <Modules asset={assets[selected]} chunks={data.chunks} />
-              )
-            ) : (
-              <Loader onLoad={handleLoad} />
-            )}
-          </Container>
-        </CSSTransition>
-      </TransitionContainer>
-    </Fragment>
+                <Loader onLoad={handleLoad} />
+              )}
+            </Container>
+          </CSSTransition>
+        </TransitionContainer>
+      </Wrapper>
+    </SoundContext.Provider>
   )
 }
 

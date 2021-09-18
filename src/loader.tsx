@@ -1,14 +1,25 @@
-import { h, FunctionComponent } from 'preact'
-import { useCallback, useRef, useState } from 'preact/hooks'
 import { styled } from 'goober'
+import { h } from 'preact'
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'preact/hooks'
 import { text } from 'promisify-file-reader'
-
-import Body from './body'
-import Button from './button'
-import { UploadText } from './typography'
-
+import { SoundContext } from './app'
+import Lines from './lines'
+import Main from './main'
+import Overlay from './overlay'
+import Panels from './panels'
 import { Stats } from './stats'
-import { UploadContainer } from './uploadContainer'
+import Toggle from './toggle'
+import ToggleGroup from './toggleGroup'
+import { HomeTitle } from './typography'
+import useSound from './useSound'
+
+let jsonExample: File = null
 
 const Container = styled('div')`
   width: 100%;
@@ -23,7 +34,7 @@ const Container = styled('div')`
   cursor: pointer;
 `
 
-const stop = (e: React.DragEvent<HTMLDivElement>) => {
+const stop = e => {
   e.preventDefault()
   e.stopPropagation()
 }
@@ -32,45 +43,90 @@ interface LoaderProps {
   onLoad(json: Stats): void
 }
 
-const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
+const Loader = ({ onLoad }: LoaderProps) => {
   const ref = useRef<HTMLInputElement>()
+  const [noisy, setNoisy] = useContext(SoundContext)
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
+  const [switchedTheme, setSwitchedTheme] = useState(
+    document.body.style.color === 'white'
+  )
+
+  useEffect(() => {
+    window.addEventListener('dragenter', handleDragEnter)
+
+    return () => {
+      window.removeEventListener('dragenter', handleDragEnter)
+    }
+  }, [])
 
   const handleClick = useCallback(() => {
+    useSound(noisy)
     ref.current.click()
-  }, [ref])
+  }, [ref, noisy])
+
   const handleSubmit = useCallback(() => {
     load(ref.current.files)
   }, [ref])
 
-  const handleHover = (val: boolean) => (
-    e: React.DragEvent<HTMLDivElement>
-  ) => {
+  const handleDragEnter = e => {
     stop(e)
-    setDragging(val)
+    setDragging(true)
   }
 
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = e => {
+    stop(e)
+    setDragging(false)
+  }
+
+  const handleLatestUpload = useCallback(
+    e => {
+      stop(e)
+      useSound(noisy)
+
+      if (localStorage.getItem('previous') == null) {
+        setError("You haven't uploaded a file yet")
+        return
+      }
+
+      if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
+    },
+    [noisy]
+  )
+
+  const handleExampleUpload = useCallback(async () => {
+    useSound(noisy)
+
+    setError('Loading example...')
+    if (jsonExample == null) {
+      const blob = await (await fetch('/stats.json')).blob()
+      jsonExample = new File([blob], 'stats.json')
+    }
+
+    load([jsonExample] as any, true)
+  }, [noisy])
+
+  const handleDrop = e => {
     stop(e)
     setDragging(false)
     load(e.dataTransfer.files)
-  }, [])
+  }
 
-  const load = async (files: FileList) => {
+  const load = async (files: FileList, isExample?: boolean) => {
     if (!files[0]) {
       setError('No file provided')
       return
     }
+
     if (error != '') setError('')
 
     const raw = await text(files[0])
     let content = {} as Stats
+
     try {
       content = JSON.parse(raw)
     } catch (err) {
       setError('Invalid file contents')
-      console.error(err)
       return
     }
 
@@ -78,57 +134,47 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
     if (onLoad) onLoad(content)
 
     try {
-      localStorage.setItem('previous', raw)
+      if (!isExample) localStorage.setItem('previous', raw)
     } catch (e) {
-      // TODO: notify the user of failure
-      console.error('Could not save json in the localStorage', e)
+      setError('Could not save the file in local storage')
     }
   }
 
+  const handleThemeChange = () => {
+    useSound(noisy, 'toggle')
+    setSwitchedTheme(!switchedTheme)
+
+    document.body.style.color = switchedTheme ? 'black' : 'white'
+
+    document.body.style.setProperty(
+      '--primary',
+      switchedTheme ? '#e7edd6' : '#2b4c59'
+    )
+
+    document.body.style.setProperty(
+      '--secondary',
+      switchedTheme ? '#b9a6d1' : '#578a68'
+    )
+  }
+
+  const handleSoundChange = useCallback(() => {
+    setNoisy(!noisy)
+    useSound(!noisy, 'toggle')
+  }, [noisy])
+
   return (
-    <Body>
-      <Container
-        onClick={handleClick}
-        style={{
-          borderStyle: dragging ? 'solid' : 'dashed',
-          borderColor: error && !dragging ? 'red' : 'grey',
-          color: error && !dragging ? 'red' : 'black'
-        }}
-      >
-        <UploadContainer
-          onDrop={handleDrop}
-          onDragEnter={handleHover(true)}
-          onDragOver={stop}
-          onDragLeave={handleHover(false)}
-        >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='48'
-            height='48'
-            viewBox='0 0 48 48'
-            style={{ fill: error && !dragging ? 'red' : 'black' }}
-          >
-            <path d='M12 4C9.79 4 8.02 5.79 8.02 8L8 40c0 2.21 1.77 4 3.98 4H36c2.21 0 4-1.79 4-4V16L28 4H12zm14 14V7l11 11H26z' />
-            <path d='M0 0h48v48H0z' fill='none' />
-          </svg>
-          <UploadText>
-            {dragging ? 'Just drop it!' : error || 'Upload your JSON file here'}
-          </UploadText>
-        </UploadContainer>
+    <Main>
+      <HomeTitle>Drop a JSON file to visualize it.</HomeTitle>
 
-        <Button
-          disabled={!localStorage.getItem('previous')}
-          onClick={e => {
-            e.preventDefault()
-            e.stopPropagation()
+      <Lines />
 
-            setError('') // previous savings cannot have errors
-            if (onLoad) onLoad(JSON.parse(localStorage.getItem('previous')))
-          }}
-        >
-          Check your latest JSON file
-        </Button>
-      </Container>
+      <Panels
+        onUpload={handleClick}
+        onLatestUpload={handleLatestUpload}
+        onExampleUpload={handleExampleUpload}
+        errorText={error}
+      />
+
       <input
         style={{ display: 'none' }}
         ref={ref}
@@ -136,7 +182,28 @@ const Loader: FunctionComponent<LoaderProps> = ({ onLoad }) => {
         id='stats-file'
         type='file'
       />
-    </Body>
+
+      <ToggleGroup>
+        <Toggle
+          content={['Theme', 'Light', 'Dark']}
+          checked={switchedTheme}
+          onChange={handleThemeChange}
+        />
+
+        <Toggle
+          content={['Sounds', 'On', 'Off']}
+          checked={!noisy}
+          onChange={handleSoundChange}
+        />
+      </ToggleGroup>
+
+      <Overlay
+        data-dragging={dragging}
+        onDrop={handleDrop}
+        onDragOver={stop}
+        onDragLeave={handleDragLeave}
+      />
+    </Main>
   )
 }
 

@@ -1,47 +1,49 @@
-import { h, FunctionComponent } from 'preact'
 import { styled } from 'goober'
+import { h } from 'preact'
 
-const H = styled('header')`
+const Nav = styled('header')`
   display: flex;
   justify-content: left;
   align-items: center;
   width: 75%;
-  height: 4rem;
+  height: 5rem;
   margin: 0 auto;
   user-select: none;
   transition: width 150ms;
 
   span {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 0.75rem + 3.3333vw, 2.5rem);
     margin-left: 1rem;
   }
 
   @media (max-width: 600px) {
-    width: 95%;
+    width: 100%;
+    padding: 0 0.5rem;
   }
 `
 
 const BackIcon = styled('svg')`
   cursor: pointer;
-  transition: background-color 150ms;
+  transition: filter 150ms;
   margin-right: 1rem;
+  border-radius: 50%;
+  padding: 0.5rem;
+  color: inherit;
+  fill: currentColor;
+  background-color: var(--primary);
 
   &:hover {
-    background-color: #e3e3e3;
+    filter: brightness(90%);
   }
 `
 
-const Image = styled('img')`
-  height: 3rem;
-`
-
 const Header = ({ onIconClick, selected }) => (
-  <H>
+  <Nav>
     {selected !== -2 && (
       <BackIcon
         xmlns='http://www.w3.org/2000/svg'
-        width='36'
-        height='36'
+        width='48'
+        height='48'
         viewBox='0 0 36 36'
         onClick={onIconClick}
       >
@@ -50,9 +52,9 @@ const Header = ({ onIconClick, selected }) => (
       </BackIcon>
     )}
 
-    <Image src='/webpack.svg' />
-    <span>stats</span>
-  </H>
+    <img style={{ height: '3rem' }} src='/webpack.svg' />
+    <span>webpack stats</span>
+  </Nav>
 )
 
 export default Header

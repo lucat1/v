@@ -1,5 +1,5 @@
-import { h } from 'preact'
 import { styled } from 'goober'
+import { h } from 'preact'
 
 export const Ul = styled('ul')`
   width: 100%;
@@ -8,36 +8,37 @@ export const Ul = styled('ul')`
   list-style-type: none;
 `
 
-export const Li = styled('li')`
-  cursor: pointer;
-  transition: background-color 150ms;
+const Li = styled('li')`
+  cursor: ${props => (props['data-interactive'] ? 'pointer' : 'initial')};
   padding: 1rem;
-  margin: 0.5rem 0;
+  margin: 1rem 0;
   user-select: none;
+  background-color: var(--primary);
+  transition: box-shadow 150ms;
+  filter: brightness(95%);
 
   p {
-    font-size: calc(1rem + 0.2vw);
+    font-size: clamp(1rem, 0.8125rem + 0.8333vw, 1.25rem);
     margin: 0 0 0.5rem 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 80%;
   }
 
   &:hover {
-    background-color: #e3e3e3;
+    box-shadow: ${props =>
+      props['data-interactive']
+        ? 'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px,rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px'
+        : 'none'};
   }
 `
 
-export const Percentage = styled('div')`
+const Percentage = styled('div')`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: clamp(0.8rem, 0.725rem + 0.3333vw, 0.9rem);
 
   div {
     height: 0.625rem;
-    background: #6a7de1;
+    background-color: var(--secondary);
   }
 
   span {
@@ -45,9 +46,25 @@ export const Percentage = styled('div')`
   }
 `
 
-export const List = ({ percentage, ...props }) => (
-  <Li {...props}>
-    <p>{props.children}</p>
+interface ListProps {
+  percentage: string | number
+  interactive: boolean
+  name: string
+  size: string
+  [x: string]: any
+}
+
+export const List = ({
+  percentage,
+  interactive,
+  name,
+  size,
+  ...props
+}: ListProps) => (
+  <Li data-interactive={interactive} {...props}>
+    <p>
+      {name} ~ {size}
+    </p>
     <Percentage>
       <div style={{ width: `${percentage}%` }} />
       <span>{percentage}%</span>
